@@ -1,0 +1,24 @@
+
+plugins {
+    id 'application'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'junit:junit:4.13.1'
+
+    implementation "org.jsoup:jsoup:1.14.1"
+    implementation "org.json:json:20180813"
+    implementation "com.squareup.okhttp3:okhttp:3.12.13"
+    
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    implementation 'com.google.guava:guava:29.0-jre'
+}
+
+application {
+    mainClass = 'com.github.catvod.demo.MainActivity'
+}
