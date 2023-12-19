@@ -1,6 +1,6 @@
 package com.github.catvod.net;
 
-import com.github.catvod.utils.Utils;
+import com.github.catvod.utils.Util;
 import com.google.common.net.HttpHeaders;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -46,7 +46,7 @@ public class OkhttpInterceptor implements Interceptor {
 
     private Request getRequest(@NonNull Chain chain) {
         Request request = chain.request();
-        if (request.url().host().equals("gitcode.net")) return request.newBuilder().addHeader(HttpHeaders.USER_AGENT, Utils.CHROME).build();
+        if (request.url().host().equals("gitcode.net")) return request.newBuilder().addHeader(HttpHeaders.USER_AGENT, Util.CHROME).build();
         return request;
     }
 }

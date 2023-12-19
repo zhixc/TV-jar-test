@@ -2,16 +2,22 @@ package com.github.catvod.spider;
 
 import android.content.Context;
 import android.text.TextUtils;
+
 import com.github.catvod.bean.Live;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author zhixc

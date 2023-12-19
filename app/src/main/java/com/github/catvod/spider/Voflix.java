@@ -8,7 +8,6 @@ import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,10 +34,11 @@ import java.util.regex.Pattern;
 public class Voflix extends Spider {
 
     private String siteUrl;
+    private final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36";
 
     private Map<String, String> getHeader() {
         Map<String, String> header = new HashMap<>();
-        header.put("User-Agent", Utils.CHROME);
+        header.put("User-Agent", userAgent);
         header.put("Referer", siteUrl + "/");
         return header;
     }
