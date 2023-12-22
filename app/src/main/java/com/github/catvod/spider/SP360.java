@@ -59,38 +59,33 @@ public class SP360 extends Spider {
         return result.toString();
     }
 
-    /*@Override
-    public String homeVideoContent() {
-        try {
-            JSONArray videos = new JSONArray();
-            String hotURL = "https://api.web.360kan.com/v1/rank?cat=2&callback=";
-            String referer = "https://www.360kan.com/rank/dianying";
-            String html = getWebContent(hotURL, referer);
-            JSONArray data = new JSONObject(content).optJSONArray("data");
-            for (int i = 0; i < data.length(); i++) {
-                JSONObject item = data.getJSONObject(i);
-                String id = item.optString("ent_id");
-                String vid = "https://api.web.360kan.com/v1/detail?cat=1&id=" + id + "&callback=";
-                String detailReferer = "https://www.360kan.com/m/" + id + ".html";
-                JSONObject detailObj = new JSONObject().put("detailUrl", vid).put("detailReferer", detailReferer);
-                String name = item.optString("title");
-//                String pic = item.optString("cover");
-                String remark = getCorrectString(item.optJSONArray("moviecat"));
-                JSONObject vod = new JSONObject()
-                        .put("vod_id", detailObj.toString())
-                        .put("vod_name", name)
-                        .put("vod_pic", pic)
-                        .put("vod_remarks", remark);
-                videos.put(vod);
-            }
-            JSONObject result = new JSONObject()
-                    .put("list", videos);
-            return result.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
+    @Override
+    public String homeVideoContent() throws Exception {
+        JSONArray videos = new JSONArray();
+        String hotUrl = "https://api.web.360kan.com/v1/rank?cat=2&callback=";
+        String referer = "https://www.360kan.com/rank/dianying";
+        String html = getWebContent(hotUrl, referer);
+        JSONArray data = new JSONObject(html).optJSONArray("data");
+        for (int i = 0; i < data.length(); i++) {
+            JSONObject item = data.getJSONObject(i);
+            String id = item.optString("ent_id");
+            String vid = "https://api.web.360kan.com/v1/detail?cat=1&id=" + id + "&callback=";
+            String detailReferer = "https://www.360kan.com/m/" + id + ".html";
+            JSONObject detailObj = new JSONObject().put("detailUrl", vid).put("detailReferer", detailReferer);
+            String name = item.optString("title");
+            String pic = item.optString("cover");
+            String remark = getCorrectString(item.optJSONArray("moviecat"));
+            JSONObject vod = new JSONObject()
+                    .put("vod_id", detailObj.toString())
+                    .put("vod_name", name)
+                    .put("vod_pic", pic)
+                    .put("vod_remarks", remark);
+            videos.put(vod);
         }
-        return "";
-    }*/
+        JSONObject result = new JSONObject();
+        result.put("list", videos);
+        return result.toString();
+    }
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
@@ -182,9 +177,9 @@ public class SP360 extends Spider {
             videos.put(vod);
         }
 
-        JSONObject result = new JSONObject()
-                .put("pagecount", 999)
-                .put("list", videos);
+        JSONObject result = new JSONObject();
+        result.put("pagecount", 999);
+        result.put("list", videos);
         return result.toString();
     }
 
@@ -340,13 +335,13 @@ public class SP360 extends Spider {
         return result.toString();
     }
 
-    private String getStringBusy(String URL, String breakFlag) throws Exception {
+    private String getStringBusy(String url, String breakFlag) throws Exception {
         String result = "";
 //        for (int k = 0; k < 5; k++) {
         for (int k = 0; k < 8; k++) {
-            result = getWebContent(URL, "https://api.web.360kan.com");
+            result = getWebContent(url, "https://api.web.360kan.com");
             if (result.contains(breakFlag)) {
-                System.out.println(URL + "请求尝试了" + (k + 1) + "次");
+                System.out.println(url + "请求尝试了" + (k + 1) + "次");
                 break;
             }
             Thread.sleep(500); // 休眠 500 毫秒，即 0.5 秒
@@ -354,7 +349,7 @@ public class SP360 extends Spider {
         return result;
     }
 
-    private String getCorrectString(JSONArray jsonArray) {
+    private String getCorrectString(JSONArray jsonArray) throws Exception {
         if (jsonArray != null) {
             return jsonArray.toString()
                     .replace("\"", "")

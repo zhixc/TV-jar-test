@@ -24,7 +24,8 @@ public class TestSP360 {
     }
 
     @Test
-    public void homeVideoContent() {
+    public void homeVideoContent() throws Exception {
+        System.out.println(sp360.homeVideoContent());
     }
 
     @Test
