@@ -28,7 +28,6 @@ public class TestPiaoHua {
     @Test
     public void categoryContent() throws Exception {
         HashMap<String, String> extend = new HashMap<>();
-//        System.out.println(btPiaoHua.categoryContent("/dongzuo/", "1", true, extend));
 //        System.out.println(piaoHua.categoryContent("/dongzuo/", "3", true, extend));
         System.out.println(piaoHua.categoryContent("https://www.xpiaohua.com/column/dongzuo/20230622/63676.html", "1", true, extend));
     }
