@@ -7,7 +7,6 @@ import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.Util;
 import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
@@ -25,6 +24,7 @@ public class Douban extends Spider {
     private final String siteUrl = "https://frodo.douban.com/api/v2";
     private final String apikey = "?apikey=0ac44ae016490db2204ce0a042db2916";
     private String extend;
+    private final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36";
 
     private Map<String, String> getHeader() {
         Map<String, String> header = new HashMap<>();
@@ -123,7 +123,7 @@ public class Douban extends Spider {
 
     private String getPic(JSONObject item) {
         try {
-            return item.getJSONObject("pic").optString("normal") + "@Referer=https://api.douban.com/@User-Agent=" + Util.CHROME;
+            return item.getJSONObject("pic").optString("normal") + "@Referer=https://api.douban.com/@User-Agent=" + userAgent;
         } catch (Exception e) {
             return "";
         }
@@ -133,9 +133,21 @@ public class Douban extends Spider {
         try {
             StringBuilder tags = new StringBuilder();
             for (String key : extend.keySet()) if (!key.equals("sort")) tags.append(extend.get(key)).append(",");
-            return Util.substring(tags.toString());
+            return substring(tags.toString());
         } catch (Exception e) {
             return "";
+        }
+    }
+
+    public static String substring(String text) {
+        return substring(text, 1);
+    }
+
+    public static String substring(String text, int num) {
+        if (text != null && text.length() > num) {
+            return text.substring(0, text.length() - num);
+        } else {
+            return text;
         }
     }
 }

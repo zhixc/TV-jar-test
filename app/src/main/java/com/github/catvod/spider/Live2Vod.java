@@ -3,7 +3,6 @@ package com.github.catvod.spider;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.github.catvod.bean.Live;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
 
@@ -429,5 +428,29 @@ public class Live2Vod extends Spider {
                 .put("playUrl", "")
                 .put("url", id);
         return result.toString();
+    }
+}
+
+class Live {
+    private String name;
+    private String url;
+    private String group;
+
+    public Live(String name, String url, String group) {
+        this.name = name;
+        this.url = url;
+        this.group = group;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getGroup() {
+        return group;
     }
 }

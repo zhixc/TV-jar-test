@@ -8,7 +8,7 @@ import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.Util;
+import com.github.catvod.utils.Misc;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -40,14 +40,14 @@ public class Xb6v extends Spider {
 
     private Map<String, String> getHeader() {
         Map<String, String> header = new HashMap<>();
-        header.put("User-Agent", Util.CHROME);
+        header.put("User-Agent", Misc.UaWinChrome);
         header.put("Referer", siteUrl + "/");
         return header;
     }
 
     private Map<String, String> getDetailHeader() {
         Map<String, String> header = new HashMap<>();
-        header.put("User-Agent", Util.CHROME);
+        header.put("User-Agent", Misc.UaWinChrome);
         return header;
     }
 
@@ -220,7 +220,7 @@ public class Xb6v extends Spider {
                     .addEncoded("keyboard", key)
                     .build();
             Request request = new Request.Builder().url(searchUrl)
-                    .addHeader("User-Agent", Util.CHROME)
+                    .addHeader("User-Agent", Misc.UaWinChrome)
                     .addHeader("Origin", siteUrl)
                     .addHeader("Referer", siteUrl + "/")
                     .post(formBody)

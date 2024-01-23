@@ -1,6 +1,5 @@
 package com.github.catvod.net;
 
-import com.github.catvod.utils.Util;
 import com.google.common.net.HttpHeaders;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -18,6 +17,8 @@ import okio.BufferedSource;
 import okio.Okio;
 
 public class OkhttpInterceptor implements Interceptor {
+
+    public static final String CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36";
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -46,7 +47,7 @@ public class OkhttpInterceptor implements Interceptor {
 
     private Request getRequest(@NonNull Chain chain) {
         Request request = chain.request();
-        if (request.url().host().equals("gitcode.net")) return request.newBuilder().addHeader(HttpHeaders.USER_AGENT, Util.CHROME).build();
+        if (request.url().host().equals("gitcode.net")) return request.newBuilder().addHeader(HttpHeaders.USER_AGENT, CHROME).build();
         return request;
     }
 }
