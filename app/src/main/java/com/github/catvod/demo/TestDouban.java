@@ -13,7 +13,7 @@ public class TestDouban {
     @Before
     public void init() throws Exception {
         douban = new Douban();
-        douban.init(new Context(), "https://raw.githubusercontent.com/zhixc/CatVodTVSpider/main/json/douban.json");
+        douban.init(new Context(), "https://raw.githubusercontent.com/zhixc/CatVodTVSpider/main/other/json/douban.json");
     }
 
     @Test
