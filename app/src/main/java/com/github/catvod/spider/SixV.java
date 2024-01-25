@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
-import com.github.catvod.net.OkHttp;
+import com.github.catvod.utils.okhttp.OkHttpUtil;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -82,7 +82,7 @@ public class SixV extends Spider {
         if (!pg.equals("1")) {
             cateURL += "/index_" + pg + ".html";
         }
-        String html = OkHttp.string(cateURL, getHeader());
+        String html = OkHttpUtil.string(cateURL, getHeader());
         Elements items = Jsoup.parse(html).select("#post_container .post_hover");
         JSONArray videos = new JSONArray();
         for (Element item : items) {
@@ -109,7 +109,7 @@ public class SixV extends Spider {
     public String detailContent(List<String> ids) throws Exception {
         String vid = ids.get(0);
         String detailURL = siteURL + vid;
-        String html = OkHttp.string(detailURL, getDetailHeader());
+        String html = OkHttpUtil.string(detailURL, getDetailHeader());
         Document doc = Jsoup.parse(html);
         Elements sourceList = doc.select("#post_content");
 
@@ -218,7 +218,7 @@ public class SixV extends Spider {
                 .addHeader("Referer", siteURL + "/")
                 .post(formBody)
                 .build();
-        OkHttpClient okHttpClient = OkHttp.client();
+        OkHttpClient okHttpClient = OkHttpUtil.defaultClient();
         Response response = okHttpClient.newCall(request).execute();
         if (response.body() == null) return "";
         String html = response.body().string();

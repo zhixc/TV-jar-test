@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
-import com.github.catvod.net.OkHttp;
+import com.github.catvod.utils.okhttp.OkHttpUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,7 +45,7 @@ public class Live2Vod extends Spider {
         JSONArray classes = new JSONArray();
         // 如果是远程配置文件的话，尝试发起请求查询
         if (!myExtend.contains("$")) {
-            JSONArray jsonArray = new JSONArray(OkHttp.string(myExtend, getHeader()));
+            JSONArray jsonArray = new JSONArray(OkHttpUtil.string(myExtend, getHeader()));
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject liveObj = jsonArray.getJSONObject(i);
                 String name = liveObj.optString("name");
@@ -107,7 +107,7 @@ public class Live2Vod extends Spider {
         String diyPic = typeIdObj.optString("pic");
         String group = typeIdObj.optString("group");
         String circuit = typeIdObj.optString("circuit");
-        String content = OkHttp.string(URL, getHeader());
+        String content = OkHttpUtil.string(URL, getHeader());
         ByteArrayInputStream is = new ByteArrayInputStream(content.getBytes());
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
         JSONArray videos = new JSONArray();

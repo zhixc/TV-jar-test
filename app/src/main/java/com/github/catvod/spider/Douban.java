@@ -2,18 +2,13 @@ package com.github.catvod.spider;
 
 import android.content.Context;
 
-import com.github.catvod.bean.Class;
-import com.github.catvod.bean.Result;
-import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
-import com.github.catvod.net.OkHttp;
-import com.google.gson.JsonParser;
+import com.github.catvod.utils.okhttp.OkHttpUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -42,14 +37,26 @@ public class Douban extends Spider {
 
     @Override
     public String homeContent(boolean filter) throws Exception {
-        List<Class> classes = new ArrayList<>();
+        JSONArray classes = new JSONArray();
         List<String> typeIds = Arrays.asList("hot_gaia", "tv_hot", "show_hot", "movie", "tv", "rank_list_movie", "rank_list_tv");
         List<String> typeNames = Arrays.asList("热门电影", "热播剧集", "热播综艺", "电影筛选", "电视筛选", "电影榜单", "电视剧榜单");
-        for (int i = 0; i < typeIds.size(); i++) classes.add(new Class(typeIds.get(i), typeNames.get(i)));
+        for (int i = 0; i < typeIds.size(); i++) {
+            JSONObject c = new JSONObject();
+            c.put("type_id", typeIds.get(i));
+            c.put("type_name", typeNames.get(i));
+            classes.put(c);
+        }
         String recommendUrl = "http://api.douban.com/api/v2/subject_collection/subject_real_time_hotest/items" + apikey;
-        JSONObject jsonObject = new JSONObject(OkHttp.string(recommendUrl, getHeader()));
+        JSONObject jsonObject = new JSONObject(OkHttpUtil.string(recommendUrl, getHeader()));
         JSONArray items = jsonObject.optJSONArray("subject_collection_items");
-        return Result.string(classes, parseVodListFromJSONArray(items), filter ? JsonParser.parseString(OkHttp.string(extend)) : null);
+        JSONArray videos = parseVodListFromJSONArray(items);
+        String f = OkHttpUtil.string(extend, null);
+        JSONObject filterConfig = new JSONObject(f);
+        JSONObject result = new JSONObject();
+        result.put("class", classes);
+        if (filter) result.put("filters", filterConfig);
+        result.put("list", videos);
+        return result.toString();
     }
 
     @Override
@@ -93,24 +100,35 @@ public class Douban extends Spider {
                 cateUrl = siteUrl + "/movie/recommend" + apikey + "&sort=" + sort + "&tags=" + tags + "&start=" + start + "&count=20";
                 break;
         }
-        JSONObject object = new JSONObject(OkHttp.string(cateUrl, getHeader()));
+        JSONObject object = new JSONObject(OkHttpUtil.string(cateUrl, getHeader()));
         JSONArray array = object.getJSONArray(itemKey);
-        List<Vod> list = parseVodListFromJSONArray(array);
+        JSONArray videos = parseVodListFromJSONArray(array);
         int page = Integer.parseInt(pg), count = Integer.MAX_VALUE, limit = 20, total = Integer.MAX_VALUE;
-        return Result.get().vod(list).page(page, count, limit, total).string();
+        JSONObject result = new JSONObject();
+        result.put("page", page);
+        result.put("pagecount", count);
+        result.put("limit", limit);
+        result.put("total", total);
+        result.put("list", videos);
+        return result.toString();
     }
 
-    private List<Vod> parseVodListFromJSONArray(JSONArray items) throws Exception {
-        List<Vod> list = new ArrayList<>();
+    private JSONArray parseVodListFromJSONArray(JSONArray items) throws Exception {
+        JSONArray videos = new JSONArray();
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = items.getJSONObject(i);
             String vodId = "msearch:" + item.optString("id");
             String name = item.optString("title");
             String pic = getPic(item);
             String remark = getRating(item);
-            list.add(new Vod(vodId, name, pic, remark));
+            JSONObject vod = new JSONObject();
+            vod.put("vod_id", vodId);
+            vod.put("vod_name", name);
+            vod.put("vod_pic", pic);
+            vod.put("vod_remarks", remark);
+            videos.put(vod);
         }
-        return list;
+        return videos;
     }
 
     private String getRating(JSONObject item) {
