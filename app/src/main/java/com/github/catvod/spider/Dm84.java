@@ -193,7 +193,7 @@ public class Dm84 extends Spider {
         String html = OkHttpUtil.string(lastUrl, getHeader());
         lastUrl = Jsoup.parse(html).select("iframe").attr("src");
         JSONObject result = new JSONObject();
-        result.put("parse", 0);
+        result.put("parse", 1);
         result.put("header", getHeader().toString());
         result.put("playUrl", "");
         result.put("url", lastUrl);
