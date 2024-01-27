@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.utils.okhttp.OkHttpUtil;
+//import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,6 +40,11 @@ public class Dm84 extends Spider {
         header.put("User-Agent", userAgent);
         header.put("Referer", siteUrl + "/");
         return header;
+    }
+
+    private String req(String url) {
+        return OkHttpUtil.string(url, getHeader());
+//        return OkHttp.string(url, getHeader());
     }
 
     @Override
@@ -87,7 +93,7 @@ public class Dm84 extends Spider {
     }
 
     private JSONArray parseVodList(String url) throws Exception {
-        String html = OkHttpUtil.string(url, getHeader());
+        String html = req(url);
         Elements elements = Jsoup.parse(html).select("[class=v_list] li");
         JSONArray videos = new JSONArray();
         for (Element e : elements) {
@@ -110,7 +116,7 @@ public class Dm84 extends Spider {
     public String detailContent(List<String> ids) throws Exception {
         String vodId = ids.get(0);
         String detailUrl = siteUrl + vodId;
-        String html = OkHttpUtil.string(detailUrl, getHeader());
+        String html = req(detailUrl);
         Document doc = Jsoup.parse(html);
         String name = doc.select(".v_title > a").text();
         String pic = doc.select("#v_content > .cover > img").attr("src");
@@ -144,17 +150,17 @@ public class Dm84 extends Spider {
             }
         }
 
-        JSONObject vod = new JSONObject()
-                .put("vod_id", ids.get(0))
-                .put("vod_name", name) // 影片名称
-                .put("vod_pic", pic) // 图片
-                .put("type_name", typeName) // 影片类型 选填
-                .put("vod_year", year) // 年份 选填
-                .put("vod_area", area) // 地区 选填
-                .put("vod_remarks", remark) // 备注 选填
-                .put("vod_actor", actor) // 主演 选填
-                .put("vod_director", director) // 导演 选填
-                .put("vod_content", description); // 简介 选填
+        JSONObject vod = new JSONObject();
+        vod.put("vod_id", ids.get(0));
+        vod.put("vod_name", name); // 影片名称
+        vod.put("vod_pic", pic); // 图片
+        vod.put("type_name", typeName); // 影片类型 选填
+        vod.put("vod_year", year); // 年份 选填
+        vod.put("vod_area", area); // 地区 选填
+        vod.put("vod_remarks", remark); // 备注 选填
+        vod.put("vod_actor", actor); // 主演 选填
+        vod.put("vod_director", director); // 导演 选填
+        vod.put("vod_content", description); // 简介 选填
         if (playMap.size() > 0) {
             vod.put("vod_play_from", TextUtils.join("$$$", playMap.keySet()));
             vod.put("vod_play_url", TextUtils.join("$$$", playMap.values()));
@@ -190,7 +196,7 @@ public class Dm84 extends Spider {
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
         String lastUrl = id;
-        String html = OkHttpUtil.string(lastUrl, getHeader());
+        String html = req(lastUrl);
         lastUrl = Jsoup.parse(html).select("iframe").attr("src");
         JSONObject result = new JSONObject();
         result.put("parse", 1);
