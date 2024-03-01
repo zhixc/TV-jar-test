@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
+//import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.okhttp.OkHttpUtil;
 
 import org.json.JSONArray;
@@ -32,6 +33,11 @@ public class Voflix extends Spider {
 
     private String siteUrl;
     private final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36";
+
+    private String req(String url, Map<String, String> header) {
+//        return OkHttp.string(url, header);
+        return OkHttpUtil.string(url, header);
+    }
 
     private Map<String, String> getHeader() {
         Map<String, String> header = new HashMap<>();
@@ -88,7 +94,7 @@ public class Voflix extends Spider {
     @Override
     public String homeVideoContent() throws Exception {
         String hotUrl = siteUrl + "/label/new.html";
-        String html = OkHttpUtil.string(hotUrl, getHeader());
+        String html = req(hotUrl, getHeader());
         Elements items = Jsoup.parse(html).select(".module-items").get(0).select(".module-item");
         JSONArray videos = parseVodList(items);
         JSONObject result = new JSONObject();
@@ -130,7 +136,7 @@ public class Voflix extends Spider {
         String by = extend.get("by") == null ? "" : extend.get("by");
         String classType = extend.get("class") == null ? "" : extend.get("class");
         String cateUrl = siteUrl + String.format("/show/%s-%s-%s-%s-----%s---%s.html", cateId, area, by, classType, pg, year);
-        String html = OkHttpUtil.string(cateUrl, getHeader());
+        String html = req(cateUrl, getHeader());
         Elements items = Jsoup.parse(html).select(".module-items .module-item");
         JSONArray videos = parseVodList(items);
         int page = Integer.parseInt(pg), count = Integer.MAX_VALUE, limit = 40, total = Integer.MAX_VALUE;
@@ -153,7 +159,7 @@ public class Voflix extends Spider {
     public String detailContent(List<String> ids) throws Exception {
         String vodId = ids.get(0);
         String detailUrl = siteUrl + vodId;
-        String html = OkHttpUtil.string(detailUrl, getHeader());
+        String html = req(detailUrl, getHeader());
         Document doc = Jsoup.parse(html);
         String name = doc.select(".module-info-heading > h1").text();
         String pic = doc.select("[class=ls-is-cached lazy lazyload]").attr("data-original");
@@ -238,7 +244,7 @@ public class Voflix extends Spider {
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
         String searchUrl = siteUrl + "/index.php/ajax/suggest?mid=1&wd=" + URLEncoder.encode(key) + "&limit=20";
-        String html = OkHttpUtil.string(searchUrl, getHeader());
+        String html = req(searchUrl, getHeader());
         JSONArray jsonArray = new JSONObject(html).getJSONArray("list");
         JSONArray videos = new JSONArray();
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -261,7 +267,7 @@ public class Voflix extends Spider {
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
         String playPageUrl = siteUrl + id;
-        String html = OkHttpUtil.string(playPageUrl, getHeader());
+        String html = req(playPageUrl, getHeader());
         String realPlayUrl = new JSONObject(getStrByRegex("player_aaaa=(.*?)</script>", html)).optString("url");
         if (realPlayUrl.contains(".m3u8") || realPlayUrl.contains(".mp4")) {
             JSONObject result = new JSONObject();
