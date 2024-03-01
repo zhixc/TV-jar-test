@@ -3,6 +3,7 @@ package com.github.catvod.spider;
 import android.content.Context;
 
 import com.github.catvod.crawler.Spider;
+//import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.okhttp.OkHttpUtil;
 
 import org.json.JSONArray;
@@ -20,6 +21,11 @@ public class Douban extends Spider {
     private final String apikey = "?apikey=0ac44ae016490db2204ce0a042db2916";
     private String extend;
     private final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36";
+
+    private String req(String url, Map<String, String> headerMap) {
+//        return OkHttp.string(url, headerMap);
+        return OkHttpUtil.string(url, headerMap);
+    }
 
     private Map<String, String> getHeader() {
         Map<String, String> header = new HashMap<>();
@@ -47,10 +53,10 @@ public class Douban extends Spider {
             classes.put(c);
         }
         String recommendUrl = "http://api.douban.com/api/v2/subject_collection/subject_real_time_hotest/items" + apikey;
-        JSONObject jsonObject = new JSONObject(OkHttpUtil.string(recommendUrl, getHeader()));
+        JSONObject jsonObject = new JSONObject(req(recommendUrl, getHeader()));
         JSONArray items = jsonObject.optJSONArray("subject_collection_items");
         JSONArray videos = parseVodListFromJSONArray(items);
-        String f = OkHttpUtil.string(extend, null);
+        String f = req(extend, null);
         JSONObject filterConfig = new JSONObject(f);
         JSONObject result = new JSONObject();
         result.put("class", classes);
@@ -100,7 +106,7 @@ public class Douban extends Spider {
                 cateUrl = siteUrl + "/movie/recommend" + apikey + "&sort=" + sort + "&tags=" + tags + "&start=" + start + "&count=20";
                 break;
         }
-        JSONObject object = new JSONObject(OkHttpUtil.string(cateUrl, getHeader()));
+        JSONObject object = new JSONObject(req(cateUrl, getHeader()));
         JSONArray array = object.getJSONArray(itemKey);
         JSONArray videos = parseVodListFromJSONArray(array);
         int page = Integer.parseInt(pg), count = Integer.MAX_VALUE, limit = 20, total = Integer.MAX_VALUE;

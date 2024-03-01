@@ -3,8 +3,8 @@ package com.github.catvod.spider;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
-import com.github.catvod.utils.okhttp.OkHttpUtil;
 //import com.github.catvod.net.OkHttp;
+import com.github.catvod.utils.okhttp.OkHttpUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,8 +43,8 @@ public class Dm84 extends Spider {
     }
 
     private String req(String url) {
-        return OkHttpUtil.string(url, getHeader());
 //        return OkHttp.string(url, getHeader());
+        return OkHttpUtil.string(url, getHeader());
     }
 
     @Override
@@ -102,6 +102,7 @@ public class Dm84 extends Spider {
             String name = item.attr("title").replaceAll("在线观看", "");
             String pic = item.attr("data-bg");
             String remark = e.select("[class=desc]").text();
+
             JSONObject vod = new JSONObject();
             vod.put("vod_id", vodId);
             vod.put("vod_name", name);
@@ -198,6 +199,7 @@ public class Dm84 extends Spider {
         String lastUrl = id;
         String html = req(lastUrl);
         lastUrl = Jsoup.parse(html).select("iframe").attr("src");
+
         JSONObject result = new JSONObject();
         result.put("parse", 1);
         result.put("header", getHeader().toString());

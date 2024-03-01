@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
+//import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.okhttp.OkHttpUtil;
 
 import okhttp3.FormBody;
@@ -34,14 +35,24 @@ import java.util.regex.Pattern;
  */
 public class SixV extends Spider {
 
-    private String siteURL;
+    private String siteUrl;
 
     private final String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
+
+    private String req(String url, Map<String, String> header) {
+//        return OkHttp.string(url, header);
+        return OkHttpUtil.string(url, header);
+    }
+
+    private OkHttpClient getOkHttpClient() {
+//        return OkHttp.client();
+        return OkHttpUtil.defaultClient();
+    }
 
     private Map<String, String> getHeader() {
         Map<String, String> header = new HashMap<>();
         header.put("User-Agent", userAgent);
-        header.put("Referer", siteURL + "/");
+        header.put("Referer", siteUrl + "/");
         return header;
     }
 
@@ -54,10 +65,8 @@ public class SixV extends Spider {
     @Override
     public void init(Context context, String extend) throws Exception {
         super.init(context, extend);
-        if (extend.endsWith("/")) {
-            extend = extend.substring(0, extend.lastIndexOf("/"));
-        }
-        siteURL = extend;
+        if (extend.endsWith("/")) extend = extend.substring(0, extend.lastIndexOf("/"));
+        siteUrl = extend;
     }
 
     @Override
@@ -71,18 +80,16 @@ public class SixV extends Spider {
             c.put("type_name", typeNames.get(i));
             classes.put(c);
         }
-        JSONObject result = new JSONObject()
-                .put("class", classes);
+        JSONObject result = new JSONObject();
+        result.put("class", classes);
         return result.toString();
     }
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
-        String cateURL = siteURL + "/" + tid;
-        if (!pg.equals("1")) {
-            cateURL += "/index_" + pg + ".html";
-        }
-        String html = OkHttpUtil.string(cateURL, getHeader());
+        String cateUrl = siteUrl + "/" + tid;
+        if (!pg.equals("1")) cateUrl += "/index_" + pg + ".html";
+        String html = req(cateUrl, getHeader());
         Elements items = Jsoup.parse(html).select("#post_container .post_hover");
         JSONArray videos = new JSONArray();
         for (Element item : items) {
@@ -92,24 +99,24 @@ public class SixV extends Spider {
             String pic = li.select("img").attr("src");
             String remark = item.select("[rel=category tag]").text();
 
-            JSONObject vod = new JSONObject()
-                    .put("vod_id", vid)
-                    .put("vod_name", name)
-                    .put("vod_pic", pic)
-                    .put("vod_remarks", remark);
+            JSONObject vod = new JSONObject();
+            vod.put("vod_id", vid);
+            vod.put("vod_name", name);
+            vod.put("vod_pic", pic);
+            vod.put("vod_remarks", remark);
             videos.put(vod);
         }
-        JSONObject result = new JSONObject()
-                .put("pagecount", 999)
-                .put("list", videos);
+        JSONObject result = new JSONObject();
+        result.put("pagecount", 999);
+        result.put("list", videos);
         return result.toString();
     }
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
         String vid = ids.get(0);
-        String detailURL = siteURL + vid;
-        String html = OkHttpUtil.string(detailURL, getDetailHeader());
+        String detailUrl = siteUrl + vid;
+        String html = req(detailUrl, getDetailHeader());
         Document doc = Jsoup.parse(html);
         Elements sourceList = doc.select("#post_content");
 
@@ -145,17 +152,17 @@ public class SixV extends Spider {
         String director = getActorOrDirector(Pattern.compile("◎导　　演　(.*?)<br>"), partHTML);
         String description = getDescription(Pattern.compile("◎简　　介(.*?)<hr>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL), partHTML);
 
-        JSONObject vod = new JSONObject()
-                .put("vod_id", ids.get(0))
-                .put("vod_name", name)
-                .put("vod_pic", pic)
-                .put("type_name", typeName)
-                .put("vod_year", year)
-                .put("vod_area", area)
-                .put("vod_remarks", remark)
-                .put("vod_actor", actor)
-                .put("vod_director", director)
-                .put("vod_content", description);
+        JSONObject vod = new JSONObject();
+        vod.put("vod_id", ids.get(0));
+        vod.put("vod_name", name);
+        vod.put("vod_pic", pic);
+        vod.put("type_name", typeName);
+        vod.put("vod_year", year);
+        vod.put("vod_area", area);
+        vod.put("vod_remarks", remark);
+        vod.put("vod_actor", actor);
+        vod.put("vod_director", director);
+        vod.put("vod_content", description);
         if (playMap.size() > 0) {
             vod.put("vod_play_from", TextUtils.join("$$$", playMap.keySet()));
             vod.put("vod_play_url", TextUtils.join("$$$", playMap.values()));
@@ -167,14 +174,8 @@ public class SixV extends Spider {
     }
 
     private String getStrByRegex(Pattern pattern, String str) {
-        try {
-            Matcher matcher = pattern.matcher(str);
-            if (matcher.find()) {
-                return matcher.group(1).trim();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Matcher matcher = pattern.matcher(str);
+        if (matcher.find()) return matcher.group(1).trim();
         return "";
     }
 
@@ -201,7 +202,7 @@ public class SixV extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        String searchURL = siteURL + "/e/search/index.php";
+        String searchUrl = siteUrl + "/e/search/index.php";
         RequestBody formBody = new FormBody.Builder()
                 .add("show", "title")
                 .add("tempid", "1")
@@ -212,14 +213,13 @@ public class SixV extends Spider {
                 .addEncoded("keyboard", key)
                 .build();
         Request request = new Request.Builder()
-                .url(searchURL)
+                .url(searchUrl)
                 .addHeader("User-Agent", userAgent)
-                .addHeader("Origin", siteURL)
-                .addHeader("Referer", siteURL + "/")
+                .addHeader("Origin", siteUrl)
+                .addHeader("Referer", siteUrl + "/")
                 .post(formBody)
                 .build();
-        OkHttpClient okHttpClient = OkHttpUtil.defaultClient();
-        Response response = okHttpClient.newCall(request).execute();
+        Response response = getOkHttpClient().newCall(request).execute();
         if (response.body() == null) return "";
         String html = response.body().string();
         response.close(); // 关闭响应资源
@@ -229,26 +229,26 @@ public class SixV extends Spider {
             String vid = item.attr("href");
             String name = item.attr("title").replaceAll("</?[^>]+>", "");
             String pic = item.select("img").attr("src");
-            JSONObject vod = new JSONObject()
-                    .put("vod_id", vid)
-                    .put("vod_name", name)
-                    .put("vod_pic", pic)
-                    .put("vod_remarks", "");
+            JSONObject vod = new JSONObject();
+            vod.put("vod_id", vid);
+            vod.put("vod_name", name);
+            vod.put("vod_pic", pic);
+            vod.put("vod_remarks", "");
             videos.put(vod);
         }
 
-        JSONObject result = new JSONObject()
-                .put("list", videos);
+        JSONObject result = new JSONObject();
+        result.put("list", videos);
         return result.toString();
     }
 
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
-        JSONObject result = new JSONObject()
-                .put("parse", 0)
-                .put("header", "")
-                .put("playUrl", "")
-                .put("url", id);
+        JSONObject result = new JSONObject();
+        result.put("parse", 0);
+        result.put("header", "");
+        result.put("playUrl", "");
+        result.put("url", id);
         return result.toString();
     }
 }
