@@ -109,6 +109,7 @@ public class Voflix extends Spider {
             String name = item.attr("title");
             String pic = item.select("img").attr("data-original");
             String remark = item.select("[class=module-item-note]").text();
+
             JSONObject vod = new JSONObject();
             vod.put("vod_id", vodId);
             vod.put("vod_name", name);
@@ -194,17 +195,17 @@ public class Voflix extends Spider {
             if (vodItems.size() > 0) playMap.put(circuitName, TextUtils.join("#", vodItems));
         }
 
-        JSONObject vod = new JSONObject()
-                .put("vod_id", ids.get(0))
-                .put("vod_name", name) // 影片名称
-                .put("vod_pic", pic) // 图片
-                .put("type_name", typeName) // 影片类型 选填
-                .put("vod_year", year) // 年份 选填
-                .put("vod_area", area) // 地区 选填
-                .put("vod_remarks", remark) // 备注 选填
-                .put("vod_actor", actor) // 主演 选填
-                .put("vod_director", director) // 导演 选填
-                .put("vod_content", description); // 简介 选填
+        JSONObject vod = new JSONObject();
+        vod.put("vod_id", ids.get(0));
+        vod.put("vod_name", name); // 影片名称
+        vod.put("vod_pic", pic); // 图片
+        vod.put("type_name", typeName);// 影片类型 选填
+        vod.put("vod_year", year); // 年份 选填
+        vod.put("vod_area", area);// 地区 选填
+        vod.put("vod_remarks", remark);// 备注 选填
+        vod.put("vod_actor", actor); // 主演 选填
+        vod.put("vod_director", director);// 导演 选填
+        vod.put("vod_content", description); // 简介 选填
         if (playMap.size() > 0) {
             vod.put("vod_play_from", TextUtils.join("$$$", playMap.keySet()));
             vod.put("vod_play_url", TextUtils.join("$$$", playMap.values()));
@@ -252,6 +253,7 @@ public class Voflix extends Spider {
             String vodId = "/detail/" + item.getInt("id") + ".html";
             String name = item.getString("name");
             String pic = item.getString("pic");
+
             JSONObject vod = new JSONObject();
             vod.put("vod_id", vodId);
             vod.put("vod_name", name);
