@@ -49,12 +49,12 @@ public class TestXingYiYing {
 
     @Test
     public void playerContent() throws Exception {
-        String episodeUrl = "https://www.xingyiying.com/index.php/vod/play/id/31606/sid/1/nid/1.html";
+        /*String episodeUrl = "https://www.xingyiying.com/index.php/vod/play/id/31606/sid/1/nid/1.html";
         List<String> vipFlags = new ArrayList<>();
-        System.out.println(xingYiYing.playerContent("YK【共12集】", episodeUrl, vipFlags));
+        System.out.println(xingYiYing.playerContent("YK【共12集】", episodeUrl, vipFlags));*/
 
-        /*String episodeUrl = "https://www.xingyiying.com/index.php/vod/play/id/31606/sid/2/nid/1.html";
+        String episodeUrl = "https://www.xingyiying.com/index.php/vod/play/id/31606/sid/2/nid/1.html";
         List<String> vipFlags = new ArrayList<>();
-        System.out.println(xingYiYing.playerContent("豪华【共12集】", episodeUrl, vipFlags));*/
+        System.out.println(xingYiYing.playerContent("豪华【共12集】", episodeUrl, vipFlags));
     }
 }

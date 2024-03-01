@@ -241,7 +241,7 @@ public class XingYiYing extends Spider {
         JSONObject jsonObject = new JSONObject(player_aaaa);
         String url = jsonObject.optString("url");
         if (url.contains(".m3u8") || url.contains(".mp4")) {
-            lastUrl = id;
+            lastUrl = url;
             parse = 0;
             headerStr = getHeaderForPlay().toString();
         }
