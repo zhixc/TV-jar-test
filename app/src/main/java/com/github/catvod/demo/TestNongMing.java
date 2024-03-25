@@ -55,6 +55,13 @@ public class TestNongMing {
     @Test
     public void playerContent() throws Exception {
         List<String> vipFlags = new ArrayList<>();
-        System.out.println(nongMing.playerContent("云播①", "https://m.xiangdao.me/vod-play-id-22271-src-1-num-1.html", vipFlags));
+//        System.out.println(nongMing.playerContent("线路①", "https://m.xiangdao.me/vod-play-id-38670-src-1-num-19.html", vipFlags));
+//        System.out.println(nongMing.playerContent("线路①", "https://m.xiangdao.me/vod-play-id-38670-src-1-num-2.html", vipFlags));
+
+        // 待测试
+//        System.out.println(nongMing.playerContent("云播①", "https://m.xiangdao.me/vod-play-id-22271-src-1-num-1.html", vipFlags));
+
+        System.out.println(nongMing.playerContent("云播①", "https://m.xiangdao.me/vod-play-id-36635-src-1-num-41.html", vipFlags));
+
     }
 }
