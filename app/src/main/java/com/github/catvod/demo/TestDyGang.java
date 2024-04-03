@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 测试模版
+ * 测试
  */
 public class TestDyGang {
 
@@ -41,8 +41,9 @@ public class TestDyGang {
     @Test
     public void detailContent() throws Exception {
         List<String> ids = new ArrayList<>();
-        ids.add("/ys/20240402/54327.htm");
+//        ids.add("/ys/20240402/54327.htm");
 //        ids.add("/dmq/20211031/48089.htm");
+        ids.add("/ys/20240402/54324.htm");
         System.out.println(dyGang.detailContent(ids));
     }
 
@@ -55,7 +56,7 @@ public class TestDyGang {
 
     @Test
     public void playerContent() throws Exception {
-        String id = "magnet:?xt=urn:btih:7df6fc1a473d519a47ee415a285ea3cc39653a0d&dn=%e8%b6%8a%e8%bf%87%e5%b1%b1%e4%b8%98$1080p.BD中英双字.mp4";
+        String id = "magnet:?xt=urn:btih:7df6fc1a473d519a47ee415a285ea3cc39653a0d&dn=%e8%b6%8a%e8%bf%87%e5%b1%b1%e4%b8%98";
         String flag = "磁力";
         List<String> vipFlags = new ArrayList<>();
         System.out.println(dyGang.playerContent(flag, id, vipFlags));

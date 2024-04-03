@@ -106,7 +106,7 @@ public class DyGang extends Spider {
     private String getActor(String html) {
         String actor = find(Pattern.compile("◎演　　员　(.*?)</p", Pattern.DOTALL), html);
         if ("".equals(actor)) actor = find(Pattern.compile("◎主　　演　(.*?)</p", Pattern.DOTALL), html);
-        return actor.replaceAll("&middot;", "·").replaceAll("\r\n", "").replaceAll("<br />", "").replaceAll("&nbsp;", "").replaceAll("　　　　 　", " / ");
+        return actor.replaceAll("&middot;", "·").replaceAll("\r\n", "").replaceAll("<br />", "").replaceAll("&nbsp;", "").replaceAll("　　　　 　", " / ").replaceAll("　　　　　 ", " / ");
     }
 
     private String getDirector(String html) {
@@ -114,7 +114,7 @@ public class DyGang extends Spider {
     }
 
     private String getBrief(String html) {
-        return find(Pattern.compile("◎简　　介(.*?)<hr", Pattern.DOTALL), html).replaceAll("&middot;", "·").replaceAll("\r\n", "").replaceAll("&nbsp;", " ");
+        return find(Pattern.compile("◎简　　介(.*?)<hr", Pattern.DOTALL), html).replaceAll("&middot;", "·").replaceAll("\r\n", "").replaceAll("&nbsp;", " ").replaceAll("　　　　", "");
     }
 
     private String removeHtmlTag(String str) {
@@ -164,7 +164,7 @@ public class DyGang extends Spider {
     public String detailContent(List<String> ids) throws Exception {
         String link = siteUrl + ids.get(0);
         String html = req(link, getHeader());
-        String remark = find(Pattern.compile("◎上映日期　(.*?)<br"), html);
+        String remark = "上映日期：" + removeHtmlTag(find(Pattern.compile("◎上映日期　(.*?)<br"), html));
         //String remark = find(Pattern.compile("◎片　　长　(.*?)<br"), html);
         //String remark = find(Pattern.compile("◎语　　言　(.*?)<br"), html);
         String actor = getActor(html);
@@ -189,9 +189,9 @@ public class DyGang extends Spider {
         vod.put("vod_id", ids.get(0));
         vod.put("vod_name", doc.select("div[class=title] > a:eq(0)").text()); // 影片名称
         vod.put("vod_pic", doc.select("img[width=120]:eq(0)").attr("src")); // 图片
-        vod.put("type_name", find(Pattern.compile("◎类　　别　(.*?)<br"), html)); // 影片类型 选填
+        vod.put("type_name", removeHtmlTag(find(Pattern.compile("◎类　　别　(.*?)<br"), html))); // 影片类型 选填
         vod.put("vod_year", find(Pattern.compile("◎年　　代　(.*?)<br"), html)); // 年份 选填
-        vod.put("vod_area", find(Pattern.compile("◎产　　地　(.*?)<br"), html)); // 地区 选填
+        vod.put("vod_area", removeHtmlTag(find(Pattern.compile("◎产　　地　(.*?)<br"), html))); // 地区 选填
         vod.put("vod_remarks", remark); // 备注 选填
         vod.put("vod_actor", actor); // 主演 选填
         vod.put("vod_director", director); // 导演 选填
