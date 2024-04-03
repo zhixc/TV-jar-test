@@ -177,7 +177,7 @@ public class DyGang extends Spider {
         for (Element a : aList) {
             String episodeUrl = a.attr("href");
             String episodeName = a.text();
-            String episode = episodeUrl + "$" + episodeName;
+            String episode = episodeName + "$" + episodeUrl;
             if (episodeUrl.startsWith("magnet")) magnetList.add(episode);
             if (episodeUrl.startsWith("ed2k")) ed2kList.add(episode);
         }
