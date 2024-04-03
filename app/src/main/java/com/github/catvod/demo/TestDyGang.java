@@ -1,0 +1,63 @@
+package com.github.catvod.demo;
+
+import android.content.Context;
+import com.github.catvod.spider.DyGang;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 测试模版
+ */
+public class TestDyGang {
+
+    DyGang dyGang;
+
+    @Before
+    public void init() throws Exception {
+        dyGang = new DyGang();
+        dyGang.init(new Context(), "");
+    }
+
+    @Test
+    public void homeContent() throws Exception {
+        System.out.println(dyGang.homeContent(true));
+    }
+
+    @Test
+    public void homeVideoContent() throws Exception {
+    }
+
+    @Test
+    public void categoryContent() throws Exception {
+        HashMap<String, String> extend = new HashMap<>();
+        System.out.println(dyGang.categoryContent("ys", "1", true, extend));
+    }
+
+    @Test
+    public void detailContent() throws Exception {
+        List<String> ids = new ArrayList<>();
+        ids.add("/ys/20240402/54327.htm");
+//        ids.add("/dmq/20211031/48089.htm");
+        System.out.println(dyGang.detailContent(ids));
+    }
+
+    @Test
+    public void searchContent() throws Exception {
+//        System.out.println(dyGang.searchContent("周处除三害", true));
+        System.out.println(dyGang.searchContent("我", true));
+        System.out.println(dyGang.searchContent("我", true, "2"));
+    }
+
+    @Test
+    public void playerContent() throws Exception {
+        String id = "magnet:?xt=urn:btih:7df6fc1a473d519a47ee415a285ea3cc39653a0d&dn=%e8%b6%8a%e8%bf%87%e5%b1%b1%e4%b8%98$1080p.BD中英双字.mp4";
+        String flag = "磁力";
+        List<String> vipFlags = new ArrayList<>();
+        System.out.println(dyGang.playerContent(flag, id, vipFlags));
+    }
+}
