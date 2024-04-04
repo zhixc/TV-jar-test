@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TestSixV {
     SixV sixV;
@@ -39,14 +40,25 @@ public class TestSixV {
 //        ids.add("/xijupian/20346.html");
 //        ids.add("/xijupian/20531.html");
 //        ids.add("/xijupian/20620.html");
-//        ids.add("/donghuapian/21608.html");
+        ids.add("/donghuapian/21608.html");
 //        ids.add("/xijupian/21836.html");
-        ids.add("/xijupian/21667.html");
+//        ids.add("/xijupian/21667.html");
         System.out.println(sixV.detailContent(ids));
     }
 
     @Test
     public void searchContent() throws Exception {
-        System.out.println(sixV.searchContent("保镖", true));
+//        System.out.println(sixV.searchContent("保镖", true));
+        System.out.println(sixV.searchContent("周处除三害", true));
+//        System.out.println(sixV.searchContent("我", true));
+//        System.out.println(sixV.searchContent("我", true, "2"));
+    }
+
+    @Test
+    public void playerContent() throws Exception {
+        String flag = "磁力1";
+        String id = "magnet:?xt=urn:btih:8c935a998671e1f0938ae51597d8819b9f6871cf";
+        List<String> vipFlags = new ArrayList<>();
+        sixV.playerContent(flag, id, vipFlags);
     }
 }
