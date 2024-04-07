@@ -40,8 +40,8 @@ public class TestSixV {
 //        ids.add("/xijupian/20346.html");
 //        ids.add("/xijupian/20531.html");
 //        ids.add("/xijupian/20620.html");
-        ids.add("/donghuapian/21608.html");
-//        ids.add("/xijupian/21836.html");
+//        ids.add("/donghuapian/21608.html");
+        ids.add("/xijupian/21836.html");
 //        ids.add("/xijupian/21667.html");
         System.out.println(sixV.detailContent(ids));
     }
