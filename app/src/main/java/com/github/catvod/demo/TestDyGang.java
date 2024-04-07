@@ -44,7 +44,9 @@ public class TestDyGang {
 //        ids.add("/ys/20240402/54327.htm");
 //        ids.add("/dmq/20211031/48089.htm");
 //        ids.add("/ys/20240402/54324.htm");
-        ids.add("/ys/20240403/54333.htm");
+//        ids.add("/ys/20240403/54333.htm");
+//        ids.add("/ys/20240126/53858.htm");
+        ids.add("/dmq/20220805/49858.htm");
         System.out.println(dyGang.detailContent(ids));
     }
 
