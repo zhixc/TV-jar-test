@@ -106,7 +106,7 @@ public class DyGang extends Spider {
     private String getActor(String html) {
         String actor = find(Pattern.compile("◎演　　员　(.*?)</p", Pattern.DOTALL), html);
         if ("".equals(actor)) actor = find(Pattern.compile("◎主　　演　(.*?)</p", Pattern.DOTALL), html);
-        return actor.replaceAll("&middot;", "·").replaceAll("\r\n", "").replaceAll("<br />", "").replaceAll("&nbsp;", "").replaceAll("　　　　 　", " / ").replaceAll("　　　　　 ", " / ");
+        return actor.replaceAll("&middot;", "·").replaceAll("\r\n", "").replaceAll("<br />", "").replaceAll("&nbsp;", "").replaceAll("　　　　 　", " / ").replaceAll("　　　　　 ", " / ").replaceAll("　　　　　　", " / ");
     }
 
     private String getDirector(String html) {
@@ -169,7 +169,7 @@ public class DyGang extends Spider {
         //String remark = find(Pattern.compile("◎语　　言　(.*?)<br"), html);
         String actor = getActor(html);
         String director = getDirector(html);
-        String brief = removeHtmlTag(getBrief(html));
+        String brief = removeHtmlTag(getBrief(html)).replaceAll("　　　", "");
         Document doc = Jsoup.parse(html);
         List<String> magnetList = new ArrayList<>();
         List<String> ed2kList = new ArrayList<>();
