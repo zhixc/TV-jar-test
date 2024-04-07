@@ -15,7 +15,7 @@ public class TestVoflix {
     @Before
     public void init() throws Exception {
         voflix = new Voflix();
-        voflix.init(new Context(), "https://www.voflix.me/");
+        voflix.init(new Context(), "https://www.voflix.vip/");
     }
 
     @Test
