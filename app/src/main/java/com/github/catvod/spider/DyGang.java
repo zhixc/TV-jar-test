@@ -127,7 +127,7 @@ public class DyGang extends Spider {
     }
 
 
-    private static boolean isMovie(String vodId) {
+    private boolean isMovie(String vodId) {
         return !(vodId.startsWith("/dsj") || vodId.startsWith("/dsj1") || vodId.startsWith("/yx") || vodId.startsWith("/dmq"));
     }
 
