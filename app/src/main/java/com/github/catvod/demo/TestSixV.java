@@ -10,22 +10,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TestSixV {
+public class TestSixV extends TestExample {
     SixV sixV;
 
     @Before
+    @Override
     public void init() throws Exception {
         sixV = new SixV();
         sixV.init(new Context(), "https://www.6vdy.org/");
     }
 
     @Test
+    @Override
     public void homeContent() throws Exception {
         // 首页测试，输出...
         System.out.println(sixV.homeContent(true));
     }
 
     @Test
+    @Override
+    public void homeVideoContent() throws Exception {
+        System.out.println(sixV.homeVideoContent());
+    }
+
+    @Test
+    @Override
     public void categoryContent() throws Exception {
         // 分类页面数据测试
         HashMap<String, String> extend = new HashMap<>();
@@ -34,6 +43,7 @@ public class TestSixV {
     }
 
     @Test
+    @Override
     public void detailContent() throws Exception {
         // 详情页面数据测试
         ArrayList<String> ids = new ArrayList<>();
@@ -41,12 +51,14 @@ public class TestSixV {
 //        ids.add("/xijupian/20531.html");
 //        ids.add("/xijupian/20620.html");
 //        ids.add("/donghuapian/21608.html");
-        ids.add("/xijupian/21836.html");
+//        ids.add("/xijupian/21836.html");
 //        ids.add("/xijupian/21667.html");
+        ids.add("/donghuapian/18878.html");
         System.out.println(sixV.detailContent(ids));
     }
 
     @Test
+    @Override
     public void searchContent() throws Exception {
 //        System.out.println(sixV.searchContent("保镖", true));
         System.out.println(sixV.searchContent("周处除三害", true));
@@ -55,6 +67,7 @@ public class TestSixV {
     }
 
     @Test
+    @Override
     public void playerContent() throws Exception {
         String flag = "磁力1";
         String id = "magnet:?xt=urn:btih:8c935a998671e1f0938ae51597d8819b9f6871cf";
