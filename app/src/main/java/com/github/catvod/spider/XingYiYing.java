@@ -185,6 +185,10 @@ public class XingYiYing extends Spider {
         return result.toString();
     }
 
+    /**
+     * 仅用于测试，编译打包jar时需要去掉这个函数
+     * just for test, remove this function when you make jar
+     */
     public static void main(String[] args) {
         XingYiYing xingYiYing = new XingYiYing();
         try {

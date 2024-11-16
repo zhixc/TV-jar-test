@@ -397,6 +397,10 @@ public class SP360 extends Spider {
         return result.toString();
     }
 
+    /**
+     * 仅用于测试，编译打包jar时需要去掉这个函数
+     * just for test, remove this function when you make jar
+     */
     public static void main(String[] args) {
         SP360 sp360 = new SP360();
         try {
