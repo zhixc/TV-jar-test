@@ -172,4 +172,24 @@ public class Douban extends Spider {
         result.put("list", videos);
         return result.toString();
     }
+
+    public static void main(String[] args) {
+        Douban douban = new Douban();
+        try {
+            douban.init(new Context(), "https://raw.githubusercontent.com/zhixc/CatVodTVSpider/main/other/json/douban.json");
+
+            //System.out.println(douban.homeContent(true));
+
+            HashMap<String, String> extend = new HashMap<>();
+//        extend.put("类型", "喜剧");
+//        extend.put("年代", "2022");
+//        extend.put("sort", "R");
+//        System.out.println(douban.categoryContent("movie", "1", true, extend));
+//        System.out.println(douban.categoryContent("movie", "2", true, extend));
+//        System.out.println(douban.categoryContent("tv", "1", true, extend));
+            System.out.println(douban.categoryContent("hot_gaia", "1", true, extend));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

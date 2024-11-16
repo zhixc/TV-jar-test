@@ -1,5 +1,7 @@
 package com.github.catvod.spider;
 
+import android.content.Context;
+
 import com.github.catvod.crawler.Spider;
 //import com.github.catvod.utils.FileUtil;
 import com.github.catvod.net.OkHttp;
@@ -289,5 +291,20 @@ public class KuaikanZy extends Spider {
         result.put("playUrl", "");
         result.put("url", id);
         return result.toString();
+    }
+
+    public static void main(String[] args) {
+        KuaikanZy kuaikanZy = new KuaikanZy();
+        try {
+            kuaikanZy.init(new Context(), "");
+
+            System.out.println(kuaikanZy.searchContent("斗破", true));
+
+            List<String> ids = new ArrayList<>();
+            ids.add("66351");
+//            System.out.println(kuaikanZy.detailContent(ids));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

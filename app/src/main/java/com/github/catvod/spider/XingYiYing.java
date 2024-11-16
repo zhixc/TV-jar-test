@@ -1,5 +1,7 @@
 package com.github.catvod.spider;
 
+import android.content.Context;
+
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
 
@@ -181,5 +183,30 @@ public class XingYiYing extends Spider {
         result.put("playUrl", "");
         result.put("url", lastUrl);
         return result.toString();
+    }
+
+    public static void main(String[] args) {
+        XingYiYing xingYiYing = new XingYiYing();
+        try {
+            xingYiYing.init(new Context(), "");
+
+            List<String> ids = new ArrayList<>();
+//        ids.add("205848");
+//        ids.add("183491");
+            ids.add("31606");
+            System.out.println(xingYiYing.detailContent(ids));
+
+            System.out.println(xingYiYing.searchContent("斗破", true));
+
+         /*String episodeUrl = "https://www.xingyiying.com/index.php/vod/play/id/31606/sid/1/nid/1.html";
+        List<String> vipFlags = new ArrayList<>();
+        System.out.println(xingYiYing.playerContent("YK【共12集】", episodeUrl, vipFlags));*/
+
+            String episodeUrl = "https://www.xingyiying.com/index.php/vod/play/id/31606/sid/2/nid/1.html";
+            List<String> vipFlags = new ArrayList<>();
+            System.out.println(xingYiYing.playerContent("豪华【共12集】", episodeUrl, vipFlags));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

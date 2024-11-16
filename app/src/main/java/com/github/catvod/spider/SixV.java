@@ -1,5 +1,6 @@
 package com.github.catvod.spider;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
@@ -300,5 +301,45 @@ public class SixV extends Spider {
         result.put("playUrl", "");
         result.put("url", id);
         return result.toString();
+    }
+
+    public static void main(String[] args) {
+        SixV  sixV = new SixV();
+        try {
+            sixV.init(new Context(), "https://www.6vdy.org/");
+
+            // 首页测试，输出...
+            System.out.println(sixV.homeContent(true));
+
+            System.out.println(sixV.homeVideoContent());
+
+            // 分类页面数据测试
+            HashMap<String, String> extend = new HashMap<>();
+//        System.out.println(sixV.categoryContent("xijupian", "1", true, extend));
+            System.out.println(sixV.categoryContent("xijupian", "3", true, extend));
+
+            // 详情页面数据测试
+            ArrayList<String> ids = new ArrayList<>();
+//        ids.add("/xijupian/20346.html");
+//        ids.add("/xijupian/20531.html");
+//        ids.add("/xijupian/20620.html");
+//        ids.add("/donghuapian/21608.html");
+//        ids.add("/xijupian/21836.html");
+//        ids.add("/xijupian/21667.html");
+            ids.add("/donghuapian/18878.html");
+            System.out.println(sixV.detailContent(ids));
+
+            //        System.out.println(sixV.searchContent("保镖", true));
+            System.out.println(sixV.searchContent("周处除三害", true));
+//        System.out.println(sixV.searchContent("我", true));
+//        System.out.println(sixV.searchContent("我", true, "2"));
+
+            String flag = "磁力1";
+            String id = "magnet:?xt=urn:btih:8c935a998671e1f0938ae51597d8819b9f6871cf";
+            List<String> vipFlags = new ArrayList<>();
+            sixV.playerContent(flag, id, vipFlags);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

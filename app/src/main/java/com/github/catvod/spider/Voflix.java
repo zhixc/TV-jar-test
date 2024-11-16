@@ -292,4 +292,31 @@ public class Voflix extends Spider {
         }
         return "";
     }
+
+    public static void main(String[] args) {
+        Voflix voflix = new Voflix();
+        try {
+            voflix.init(new Context(), "https://www.voflix.vip/");
+
+            System.out.println(voflix.homeContent(true));
+
+            System.out.println(voflix.homeVideoContent());
+
+            HashMap<String, String> extend = new HashMap<>();
+            extend.put("area", "中国香港");
+            System.out.println(voflix.categoryContent("1", "1", true, extend));
+
+
+            ArrayList<String> ids = new ArrayList<>();
+//        ids.add("/detail/156852.html");
+            ids.add("/detail/162486.html");
+            System.out.println(voflix.detailContent(ids));
+
+            System.out.println(voflix.searchContent("我", true));
+
+            System.out.println(voflix.playerContent("", "/play/139141-2-1.html", null));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

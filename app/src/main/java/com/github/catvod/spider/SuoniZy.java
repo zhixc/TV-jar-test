@@ -1,5 +1,6 @@
 package com.github.catvod.spider;
 
+import android.content.Context;
 import android.text.TextUtils;
 import com.github.catvod.crawler.Spider;
 //import com.github.catvod.utils.FileUtil;
@@ -268,5 +269,21 @@ public class SuoniZy extends Spider {
         result.put("playUrl", "");
         result.put("url", id);
         return result.toString();
+    }
+
+    public static void main(String[] args) {
+        SuoniZy suoniZy = new SuoniZy();
+        try {
+            suoniZy.init(new Context(), "");
+
+            System.out.println(suoniZy.searchContent("神印", true));
+
+            List<String> ids = new ArrayList<>();
+//        ids.add("64676"); // 紫川·光明三杰
+            ids.add("34382"); // 完美世界
+            System.out.println(suoniZy.detailContent(ids));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

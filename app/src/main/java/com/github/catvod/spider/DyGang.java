@@ -1,5 +1,7 @@
 package com.github.catvod.spider;
 
+import android.content.Context;
+
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
 
@@ -8,6 +10,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -110,7 +113,8 @@ public class DyGang extends Spider {
 
     private String getActor(String html) {
         String actor = find(Pattern.compile("◎演　　员　(.*?)</p", Pattern.DOTALL), html);
-        if ("".equals(actor)) actor = find(Pattern.compile("◎主　　演　(.*?)</p", Pattern.DOTALL), html);
+        if ("".equals(actor))
+            actor = find(Pattern.compile("◎主　　演　(.*?)</p", Pattern.DOTALL), html);
         return actor.replaceAll("&middot;", "·").replaceAll("\r\n", "").replaceAll("<br />", "").replaceAll("&nbsp;", "").replaceAll("　　　　 　", " / ").replaceAll("　　　　　 ", " / ").replaceAll("　　　　　　", " / ");
     }
 
@@ -195,8 +199,10 @@ public class DyGang extends Spider {
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
-        if ("my_dianying".equals(tid)) tid = extend.get("cateId") == null ? "ys" : extend.get("cateId");
-        if ("my_dianshiju".equals(tid)) tid = extend.get("cateId") == null ? "dsj" : extend.get("cateId");
+        if ("my_dianying".equals(tid))
+            tid = extend.get("cateId") == null ? "ys" : extend.get("cateId");
+        if ("my_dianshiju".equals(tid))
+            tid = extend.get("cateId") == null ? "dsj" : extend.get("cateId");
         String cateUrl = siteUrl + "/" + tid;
         if (!"1".equals(pg)) cateUrl += "/index_" + pg + ".htm";
         String html = req(cateUrl, getHeader());
@@ -306,5 +312,39 @@ public class DyGang extends Spider {
         result.put("playUrl", "");
         result.put("url", id);
         return result.toString();
+    }
+
+    public static void main(String[] args) {
+        DyGang dyGang = new DyGang();
+        try {
+            dyGang.init(new Context(), "");
+            System.out.println(dyGang.homeContent(true));
+
+            System.out.println(dyGang.homeVideoContent());
+
+            HashMap<String, String> extend = new HashMap<>();
+            System.out.println(dyGang.categoryContent("ys", "1", true, extend));
+
+            List<String> ids = new ArrayList<>();
+//        ids.add("/ys/20240402/54327.htm");
+//        ids.add("/dmq/20211031/48089.htm");
+//        ids.add("/ys/20240402/54324.htm");
+//        ids.add("/ys/20240403/54333.htm");
+//        ids.add("/ys/20240126/53858.htm");
+//        ids.add("/dmq/20220805/49858.htm");
+            ids.add("/dmq/20240304/54101.htm");
+            System.out.println(dyGang.detailContent(ids));
+
+//        System.out.println(dyGang.searchContent("周处除三害", true));
+//        System.out.println(dyGang.searchContent("我", true));
+//        System.out.println(dyGang.searchContent("我", true, "2"));
+
+            String id = "magnet:?xt=urn:btih:7df6fc1a473d519a47ee415a285ea3cc39653a0d&dn=%e8%b6%8a%e8%bf%87%e5%b1%b1%e4%b8%98";
+            String flag = "磁力";
+            List<String> vipFlags = new ArrayList<>();
+            System.out.println(dyGang.playerContent(flag, id, vipFlags));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

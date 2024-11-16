@@ -1,5 +1,6 @@
 package com.github.catvod.spider;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
@@ -8,6 +9,7 @@ import com.github.catvod.net.OkHttp;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -210,5 +212,27 @@ public class PiaoHua extends Spider {
         result.put("playUrl", "");
         result.put("url", id);
         return result.toString();
+    }
+
+    public static void main(String[] args) {
+        PiaoHua piaoHua = new PiaoHua();
+        try {
+            piaoHua.init(new Context());
+            System.out.println(piaoHua.homeContent(true));
+            HashMap<String, String> extend = new HashMap<>();
+//        System.out.println(piaoHua.categoryContent("/dongzuo/", "3", true, extend));
+            System.out.println(piaoHua.categoryContent("https://www.xpiaohua.com/column/dongzuo/20230622/63676.html", "1", true, extend));
+
+            ArrayList<String> ids = new ArrayList<>();
+//        ids.add("https://www.xpiaohua.com/column/lianxuju/20210221/51623.html");
+//        ids.add("https://www.xpiaohua.com/column/dongzuo/20230626/63766.html");
+//        ids.add("https://www.xpiaohua.com/column/dongzuo/20230622/63721.html");
+            ids.add("https://www.xpiaohua.com/column/dongzuo/20230622/63719.html");
+            System.out.println(piaoHua.detailContent(ids));
+
+            System.out.println(piaoHua.searchContent("长月", true));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

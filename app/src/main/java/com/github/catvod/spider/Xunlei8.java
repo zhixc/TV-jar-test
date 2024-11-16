@@ -1,5 +1,7 @@
 package com.github.catvod.spider;
 
+import android.content.Context;
+
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
 
@@ -257,5 +259,28 @@ public class Xunlei8 extends Spider {
         result.put("playUrl", "");
         result.put("url", id);
         return result.toString();
+    }
+
+    public static void main(String[] args) {
+        Xunlei8  xunlei8 = new Xunlei8();
+        try {
+            xunlei8.init(new Context(), "");
+            System.out.println(xunlei8.homeVideoContent());
+
+            HashMap<String, String> extend = new HashMap<>();
+            extend.put("cateId", "科幻");
+            extend.put("year", "2023");
+            System.out.println(xunlei8.categoryContent("list", "1", true, extend));
+
+            ArrayList<String> ids = new ArrayList<>();
+//        ids.add("/movie/40555095.html");
+            ids.add("/movie/75984095.html");
+            System.out.println(xunlei8.detailContent(ids));
+
+            //System.out.println(xunlei8.searchContent("周处除三害", true));
+            System.out.println(xunlei8.searchContent("变形", true));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

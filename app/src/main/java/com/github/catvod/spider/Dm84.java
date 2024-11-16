@@ -1,5 +1,6 @@
 package com.github.catvod.spider;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
@@ -204,5 +205,32 @@ public class Dm84 extends Spider {
         result.put("playUrl", "");
         result.put("url", lastUrl);
         return result.toString();
+    }
+
+    /**
+     * just for test
+     */
+    public static void main(String[] args) {
+        Dm84 dm84 = new Dm84();
+        try {
+            dm84.init(new Context(), "");
+            System.out.println(dm84.homeContent(true));
+            System.out.println(dm84.homeVideoContent());
+
+            /*HashMap<String, String> extend = new HashMap<>();
+            extend.put("year", "2023");
+            System.out.println(dm84.categoryContent("1", "1", true, extend));*/
+
+            /*List<String> ids = new ArrayList<>();
+            ids.add("/v/4045.html");
+            System.out.println(dm84.detailContent(ids));*/
+
+            //System.out.println(dm84.searchContent("修仙", true));
+
+            /*List<String> vipFlags = new ArrayList<>();
+            System.out.println(dm84.playerContent("线路1", "https://dm84.tv/p/4045-1-1.html", vipFlags));*/
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
