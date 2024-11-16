@@ -3,8 +3,7 @@ package com.github.catvod.spider;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
-//import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.okhttp.OkHttpUtil;
+import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,8 +33,7 @@ public class NongMing extends Spider {
     private final String userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1";
 
     private String req(String url, Map<String, String> header) {
-//        return OkHttp.string(url, header);
-        return OkHttpUtil.string(url, header);
+        return OkHttp.string(url, header);
     }
 
     private Map<String, String> getHeader() {

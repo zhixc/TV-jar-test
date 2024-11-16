@@ -1,8 +1,7 @@
 package com.github.catvod.spider;
 
 import com.github.catvod.crawler.Spider;
-//import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.okhttp.OkHttpUtil;
+import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,8 +36,7 @@ public class Cs1369 extends Spider {
     }
 
     private String req(String url, Map<String, String> header) {
-//        return OkHttp.string(url, header);
-        return OkHttpUtil.string(url, header);
+        return OkHttp.string(url, header);
     }
 
     private String find(Pattern pattern, String html) {

@@ -3,8 +3,7 @@ package com.github.catvod.spider;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
-//import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.okhttp.OkHttpUtil;
+import com.github.catvod.net.OkHttp;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -46,8 +45,7 @@ public class SixV extends Spider {
     private final String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
 
     private String req(String url, Map<String, String> header) {
-        //return OkHttp.string(url, header);
-        return OkHttpUtil.string(url, header);
+        return OkHttp.string(url, header);
     }
 
     private Response req(Request request) throws Exception {
@@ -62,8 +60,7 @@ public class SixV extends Spider {
     }
 
     private OkHttpClient okClient() {
-        //return OkHttp.client();
-        return OkHttpUtil.defaultClient();
+        return OkHttp.client();
     }
 
     private Map<String, String> getHeader() {

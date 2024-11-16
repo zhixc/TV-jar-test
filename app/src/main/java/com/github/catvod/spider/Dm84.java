@@ -3,8 +3,7 @@ package com.github.catvod.spider;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
-//import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.okhttp.OkHttpUtil;
+import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,8 +42,7 @@ public class Dm84 extends Spider {
     }
 
     private String req(String url) {
-        //return OkHttp.string(url, getHeader());
-        return OkHttpUtil.string(url, getHeader());
+        return OkHttp.string(url, getHeader());
     }
 
     private String find(String regexStr, String htmlStr) {

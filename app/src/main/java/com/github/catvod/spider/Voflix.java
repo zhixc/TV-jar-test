@@ -4,8 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
-//import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.okhttp.OkHttpUtil;
+import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,8 +34,7 @@ public class Voflix extends Spider {
     private final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36";
 
     private String req(String url, Map<String, String> header) {
-//        return OkHttp.string(url, header);
-        return OkHttpUtil.string(url, header);
+        return OkHttp.string(url, header);
     }
 
     private Map<String, String> getHeader() {
