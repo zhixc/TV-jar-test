@@ -1,6 +1,7 @@
 package com.github.catvod.spider;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
 //import com.github.catvod.utils.FileUtil;
@@ -221,7 +222,7 @@ public class KuaikanZy extends Spider {
             Elements items = source.select("div[class=listitems row]");
             List<String> vodItems = new ArrayList<>();
             for (Element item : items) vodItems.add(item.select("a.play-item").text());
-            if (vodItems.size() > 0) playMap.put(circuitName, String.join("#", vodItems));
+            if (vodItems.size() > 0) playMap.put(circuitName, TextUtils.join("#", vodItems));
         }
 
         JSONObject vod = new JSONObject();
@@ -236,8 +237,8 @@ public class KuaikanZy extends Spider {
         vod.put("vod_director", director); // 导演 选填
         vod.put("vod_content", brief); // 简介 选填
         if (playMap.size() > 0) {
-            vod.put("vod_play_from", String.join("$$$", playMap.keySet()));
-            vod.put("vod_play_url", String.join("$$$", playMap.values()));
+            vod.put("vod_play_from", TextUtils.join("$$$", playMap.keySet()));
+            vod.put("vod_play_url", TextUtils.join("$$$", playMap.values()));
         }
         JSONArray jsonArray = new JSONArray().put(vod);
         JSONObject result = new JSONObject().put("list", jsonArray);

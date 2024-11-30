@@ -1,6 +1,7 @@
 package com.github.catvod.spider;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
@@ -147,8 +148,8 @@ public class DyGang extends Spider {
             if (episodeUrl.startsWith("magnet")) magnetList.add(episode);
             if (episodeUrl.startsWith("ed2k")) ed2kList.add(episode);
         }
-        if (magnetList.size() > 0) playMap.put("磁力", String.join("#", magnetList));
-        if (ed2kList.size() > 0) playMap.put("电驴", String.join("#", ed2kList));
+        if (magnetList.size() > 0) playMap.put("磁力", TextUtils.join("#", magnetList));
+        if (ed2kList.size() > 0) playMap.put("电驴", TextUtils.join("#", ed2kList));
         return playMap;
     }
 
@@ -254,8 +255,8 @@ public class DyGang extends Spider {
         vod.put("vod_director", director); // 导演 选填
         vod.put("vod_content", brief); // 简介 选填
         if (playMap.size() > 0) {
-            vod.put("vod_play_from", String.join("$$$", playMap.keySet()));
-            vod.put("vod_play_url", String.join("$$$", playMap.values()));
+            vod.put("vod_play_from", TextUtils.join("$$$", playMap.keySet()));
+            vod.put("vod_play_url", TextUtils.join("$$$", playMap.values()));
         }
         JSONArray jsonArray = new JSONArray().put(vod);
         JSONObject result = new JSONObject().put("list", jsonArray);
