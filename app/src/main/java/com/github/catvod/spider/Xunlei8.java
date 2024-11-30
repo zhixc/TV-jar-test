@@ -1,13 +1,10 @@
 package com.github.catvod.spider;
 
-import android.content.Context;
+import android.util.Base64;
 
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -19,11 +16,17 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * @author zhixc
@@ -83,11 +86,66 @@ public class Xunlei8 extends Spider {
             JSONObject vod = new JSONObject();
             vod.put("vod_id", vodId);
             vod.put("vod_name", name);
-            vod.put("vod_pic", pic);
+            vod.put("vod_pic", fixCover(pic));
             vod.put("vod_remarks", remark);
             videos.put(vod);
         }
         return videos;
+    }
+
+    private String fixCover(String cover) {
+        try {
+            return "proxy://do=xunlei8&pic=" + Base64.encodeToString(cover.getBytes("UTF-8"), Base64.DEFAULT | Base64.URL_SAFE | Base64.NO_WRAP);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cover;
+    }
+
+    private static HashMap<String, String> xunlei8PicHeader = null;
+
+    public static Object[] loadPic(String pic) {
+        try {
+            pic = new String(Base64.decode(pic, Base64.DEFAULT | Base64.URL_SAFE | Base64.NO_WRAP), "UTF-8");
+            if (xunlei8PicHeader == null) {
+                xunlei8PicHeader = new HashMap<>();
+                xunlei8PicHeader.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36");
+                xunlei8PicHeader.put("referer", "https://xunlei8.top/");
+            }
+            Response response = OkHttp.newCall(pic, xunlei8PicHeader);
+            if (response.code() == 200) {
+                Headers headers = response.headers();
+                String type = headers.get("Content-Type");
+                if (type == null) {
+                    type = "application/octet-stream";
+                }
+                Object[] result = new Object[3];
+                result[0] = 200;
+                result[1] = type;
+                System.out.println(pic);
+                System.out.println(type);
+                result[2] = response.body().byteStream();
+                return result;
+            }
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+        return null;
+    }
+
+    // 集合元素用符号拼接
+    public static String join(CharSequence delimiter, Iterable tokens) {
+        final Iterator<?> it = tokens.iterator();
+        if (!it.hasNext()) {
+            return "";
+        }
+        final StringBuilder sb = new StringBuilder();
+        sb.append(it.next());
+        while (it.hasNext()) {
+            sb.append(delimiter);
+            sb.append(it.next());
+        }
+        return sb.toString();
     }
 
     private String fixVodInfo(Element e) {
@@ -196,14 +254,14 @@ public class Xunlei8 extends Spider {
             if (episodeUrl.startsWith("thunder://")) vodItems.add(episode);
         }
         Map<String, String> playMap = new LinkedHashMap<>();
-        if (magnetList.size() > 0) playMap.put("磁力", String.join("#", magnetList));
-        if (ed2kList.size() > 0) playMap.put("电驴", String.join("#", ed2kList));
-        if (vodItems.size() > 0) playMap.put("边下边播", String.join("#", vodItems));
+        if (magnetList.size() > 0) playMap.put("磁力", join("#", magnetList));
+        if (ed2kList.size() > 0) playMap.put("电驴", join("#", ed2kList));
+        if (vodItems.size() > 0) playMap.put("边下边播", join("#", vodItems));
 
         JSONObject vod = new JSONObject();
         vod.put("vod_id", ids.get(0));
         vod.put("vod_name", doc.select("h1").text()); // 影片名称
-        vod.put("vod_pic", pic); // 图片
+        vod.put("vod_pic", fixCover(pic)); // 图片
         vod.put("type_name", typeName); // 影片类型 选填
         vod.put("vod_year", year); // 年份 选填
         vod.put("vod_area", area); // 地区 选填
@@ -212,8 +270,8 @@ public class Xunlei8 extends Spider {
         vod.put("vod_director", director); // 导演 选填
         vod.put("vod_content", brief); // 简介 选填
         if (playMap.size() > 0) {
-            vod.put("vod_play_from", String.join("$$$", playMap.keySet()));
-            vod.put("vod_play_url", String.join("$$$", playMap.values()));
+            vod.put("vod_play_from", join("$$$", playMap.keySet()));
+            vod.put("vod_play_url", join("$$$", playMap.values()));
         }
         JSONArray jsonArray = new JSONArray().put(vod);
         JSONObject result = new JSONObject().put("list", jsonArray);
@@ -242,7 +300,7 @@ public class Xunlei8 extends Spider {
             JSONObject vod = new JSONObject();
             vod.put("vod_id", vodId);
             vod.put("vod_name", name);
-            vod.put("vod_pic", pic);
+            vod.put("vod_pic", fixCover(pic));
             vod.put("vod_remarks", remark);
             videos.put(vod);
         }
@@ -259,32 +317,5 @@ public class Xunlei8 extends Spider {
         result.put("playUrl", "");
         result.put("url", id);
         return result.toString();
-    }
-
-    /**
-     * 仅用于测试，编译打包jar时需要去掉这个函数
-     * just for test, remove this function when you make jar
-     */
-    public static void main(String[] args) {
-        Xunlei8  xunlei8 = new Xunlei8();
-        try {
-            xunlei8.init(new Context(), "");
-            System.out.println(xunlei8.homeVideoContent());
-
-            HashMap<String, String> extend = new HashMap<>();
-            extend.put("cateId", "科幻");
-            extend.put("year", "2023");
-            System.out.println(xunlei8.categoryContent("list", "1", true, extend));
-
-            ArrayList<String> ids = new ArrayList<>();
-//        ids.add("/movie/40555095.html");
-            ids.add("/movie/75984095.html");
-            System.out.println(xunlei8.detailContent(ids));
-
-            //System.out.println(xunlei8.searchContent("周处除三害", true));
-            System.out.println(xunlei8.searchContent("变形", true));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }
