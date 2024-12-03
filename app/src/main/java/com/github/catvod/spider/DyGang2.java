@@ -42,7 +42,6 @@ public class DyGang2 extends Spider {
     private String nextSearchUrlPrefix;
     private String nextSearchUrlSuffix;
 
-
     private Map<String, String> getHeader() {
         Map<String, String> header = new HashMap<>();
         header.put("User-Agent", Util.CHROME);
@@ -57,7 +56,7 @@ public class DyGang2 extends Spider {
     }
 
     private String response2string(Response response) throws Exception {
-        if (!response.isSuccessful()) return "";
+        if (!response.isSuccessful() || response.body() == null) return "";
         byte[] bytes = response.body().bytes();
         response.close();
         return new String(bytes, "GBK");
@@ -68,7 +67,7 @@ public class DyGang2 extends Spider {
         return matcher.find() ? matcher.group(1).trim() : "";
     }
 
-    private List<Vod> parseVodListFromDoc(String html, boolean isHotVod) throws Exception {
+    private List<Vod> parseVodListFromDoc(String html, boolean isHotVod) {
         List<Vod> videos = new ArrayList<>();
         Document doc = Jsoup.parse(html);
         String itemsCssQuery = isHotVod ? "td[width=132]" : "table[width=388]";
@@ -92,7 +91,7 @@ public class DyGang2 extends Spider {
         return getStrByRegex(Pattern.compile("◎导　　演　(.*?)<br"), html).replaceAll("&middot;", "·");
     }
 
-    private String getBrief(String html) {
+    private String getDescription(String html) {
         return getStrByRegex(Pattern.compile("◎简　　介(.*?)<hr", Pattern.DOTALL), html).replaceAll("&middot;", "·").replaceAll("\r\n", "").replaceAll("&nbsp;", " ").replaceAll("　　　　", "");
     }
 
@@ -136,9 +135,10 @@ public class DyGang2 extends Spider {
         return playMap;
     }
 
-    private int str2int(String str) {
+    private int parseLastPageNumber(String html) {
         try {
-            int num = Integer.parseInt(str);
+            String href = Jsoup.parse(html).select("td[align=middle] > a").last().attr("href");
+            int num = Integer.parseInt(getStrByRegex(Pattern.compile("index_(.*?)\\.htm"), href));
             return num;
         } catch (Exception ignored) {
             return 1;
@@ -175,8 +175,7 @@ public class DyGang2 extends Spider {
         if (!"1".equals(pg)) cateUrl += "/index_" + pg + ".htm";
         String html = response2string(OkHttp.newCall(cateUrl, getHeader()));
         List<Vod> videos = parseVodListFromDoc(html, false);
-        String href = Jsoup.parse(html).select("td[align=middle] > a").last().attr("href");
-        int lastPageNumber = str2int(getStrByRegex(Pattern.compile("index_(.*?)\\.htm"), href));
+        int lastPageNumber = parseLastPageNumber(html);
         int page = Integer.parseInt(pg), count = (lastPageNumber == 1 || lastPageNumber < page) ? page : lastPageNumber, limit = videos.size(), total = Integer.MAX_VALUE;
         return Result.get().vod(videos).page(page, count, limit, total).string();
     }
@@ -189,7 +188,7 @@ public class DyGang2 extends Spider {
         String remark = "上映日期：" + removeHtmlTag(getStrByRegex(Pattern.compile("◎上映日期　(.*?)<br"), html));
         String actor = getActor(html);
         String director = getDirector(html);
-        String description = removeHtmlTag(getBrief(html)).replaceAll("　　　", "").replaceAll("　　", "");
+        String description = removeHtmlTag(getDescription(html)).replaceAll("　　　", "").replaceAll("　　", "");
         Document doc = Jsoup.parse(html);
         Map<String, String> playMap = isMovie(vodId) ? parsePlayMapForMovieFromDoc(doc) : parsePlayMapFromDoc(doc);
         String name = doc.select("div[class=title] > a:eq(0)").text();
@@ -243,7 +242,6 @@ public class DyGang2 extends Spider {
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .header("Origin", siteUrl)
                     .header("Referer", siteUrl + "/")
-//                    .header("Upgrade-Insecure-Requests", "1")
                     .header("User-Agent", Util.CHROME)
                     .build();
             Response response = OkHttp.newCall(request);
@@ -272,12 +270,13 @@ public class DyGang2 extends Spider {
             dyGang.init(new Context(), "https://raw.githubusercontent.com/zhixc/CatVodSpider/refs/heads/dev/json/DyGang.json");
 //            System.out.println(dyGang.homeContent(true));
 //            System.out.println();
-//            System.out.println(dyGang.categoryContent("my_dianying", "1", true, new HashMap<>()));
+            System.out.println(dyGang.categoryContent("my_dianying", "1", true, new HashMap<>()));
 //            System.out.println(dyGang.categoryContent("my_dianying", "1040", true, new HashMap<>()));
 //            System.out.println(dyGang.detailContent(Arrays.asList("/ys/20241202/56044.htm")));
-            System.out.println(dyGang.searchContent("我", true));
-            Thread.sleep(5 * 1000);
-            System.out.println(dyGang.searchContent("我", true, "2"));
+
+//            System.out.println(dyGang.searchContent("我", true));
+//            Thread.sleep(5 * 1000);
+//            System.out.println(dyGang.searchContent("我", true, "2"));
         }catch (Exception e){
             e.printStackTrace();
         }
