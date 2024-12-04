@@ -1,11 +1,13 @@
 package com.github.catvod.spider;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.bean.Class;
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Util;
 
@@ -127,9 +129,9 @@ public class Xl720two extends Spider {
         String cateUrl = siteUrl + "/category/" + tid;
         // https://www.xl720.com/category/dongzuopian/page/2
         if (!pg.equals("1")) cateUrl += "/page/" + pg;
-        String html = OkHttp.string(cateUrl, getHeader(siteUrl+"/"));
+        String html = OkHttp.string(cateUrl, getHeader(siteUrl + "/"));
         List<Vod> videos = parseVodListFromDoc(html);
-        int page = Integer.parseInt(pg), count = parseLastPageNumber(html), limit = videos.size(), total = Integer.MAX_VALUE;;
+        int page = Integer.parseInt(pg), count = parseLastPageNumber(html), limit = videos.size(), total = Integer.MAX_VALUE;
         return Result.get().vod(videos).page(page, count, limit, total).string();
     }
 
@@ -143,14 +145,14 @@ public class Xl720two extends Spider {
         for (Element a : doc.select("#play_list > a")) {
             String episodeUrl = a.attr("href").split("path=")[1].replaceAll("ftp", "tvbox-xg:ftp");
             String episodeTitle = a.text();
-            vodItems.add(episodeTitle+"$"+episodeUrl);
+            vodItems.add(episodeTitle + "$" + episodeUrl);
         }
         if (vodItems.size() > 0) playMap.put("荐片", TextUtils.join("#", vodItems));
         vodItems = new ArrayList<>();
         for (Element a : doc.select("#zdownload > .download-link > a")) {
             String episodeUrl = a.attr("href");
             String episodeTitle = a.text().replaceAll(".torrent", "");
-            vodItems.add(episodeTitle+"$"+episodeUrl);
+            vodItems.add(episodeTitle + "$" + episodeUrl);
         }
         if (vodItems.size() > 0) playMap.put("磁力", TextUtils.join("#", vodItems));
 
@@ -202,10 +204,10 @@ public class Xl720two extends Spider {
         String searchUrl = siteUrl + "/?s=" + URLEncoder.encode(key);
         String html = "";
         if ("1".equals(pg)) {
-            html = OkHttp.string(searchUrl, getHeader(siteUrl+"/"));
+            html = OkHttp.string(searchUrl, getHeader(siteUrl + "/"));
         } else {
             searchUrl = siteUrl + "/page/2?s=" + URLEncoder.encode(key);
-            html = OkHttp.string(searchUrl, getHeader(siteUrl+"/"));
+            html = OkHttp.string(searchUrl, getHeader(siteUrl + "/"));
         }
         List<Vod> videos = parseVodListFromDoc(html);
         return Result.string(videos);
@@ -214,5 +216,15 @@ public class Xl720two extends Spider {
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
         return Result.get().url(id).string();
+    }
+
+    public static void main(String[] args) {
+        Xl720two xl720two = new Xl720two();
+        try {
+            xl720two.init(new Context(), "");
+            SpiderDebug.log(xl720two.searchContent("我", true));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

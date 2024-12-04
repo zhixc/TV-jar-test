@@ -272,7 +272,7 @@ public class DyGang2 extends Spider {
     public static void main(String[] args) {
         DyGang dyGang = new DyGang();
         try {
-            dyGang.init(new Context(), "");
+            dyGang.init(new Context(), "https://fastly.jsdelivr.net/gh/zhixc/CatVodSpider@refs/heads/dev/json/DyGang.json");
             SpiderDebug.log(dyGang.homeContent(true));
             Thread.sleep(5 * 1000L);
 
