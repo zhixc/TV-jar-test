@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
@@ -15,6 +16,7 @@ import org.jsoup.select.Elements;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -292,13 +294,25 @@ public class Xl720 extends Spider {
         Xl720 xl720 = new Xl720();
         try {
             xl720.init(new Context());
-//            System.out.println(xl720.homeContent(true));
-//            System.out.println(xl720.categoryContent("dongzuopian", "1", true, new HashMap<>()));
-//            System.out.println(xl720.categoryContent("dongzuopian", "269", true, new HashMap<>()));
-//            System.out.println(xl720.detailContent(Arrays.asList("https://www.xl720.com/thunder/50204.html")));
-//            System.out.println(xl720.detailContent(Arrays.asList("https://www.xl720.com/thunder/15675.html")));
-//            System.out.println(xl720.searchContent("周处", true));
-            System.out.println(xl720.searchContent("我", true, "2"));
+            SpiderDebug.log(xl720.homeContent(true));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(xl720.categoryContent("dongzuopian", "1", true, new HashMap<>()));
+            Thread.sleep(5 * 1000L);
+            SpiderDebug.log(xl720.categoryContent("dongzuopian", "269", true, new HashMap<>()));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(xl720.detailContent(Arrays.asList("https://www.xl720.com/thunder/50204.html")));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(xl720.detailContent(Arrays.asList("https://www.xl720.com/thunder/15675.html")));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(xl720.searchContent("周处", true));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(xl720.searchContent("我", true, "2"));
+            Thread.sleep(5 * 1000L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

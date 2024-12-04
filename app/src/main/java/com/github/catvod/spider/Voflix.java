@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
@@ -302,23 +303,25 @@ public class Voflix extends Spider {
         try {
             voflix.init(new Context(), "https://www.voflix.vip/");
 
-            System.out.println(voflix.homeContent(true));
+            SpiderDebug.log(voflix.homeContent(true));
+            Thread.sleep(5 * 1000L);
 
-            System.out.println(voflix.homeVideoContent());
+            SpiderDebug.log(voflix.homeVideoContent());
+            Thread.sleep(5 * 1000L);
 
             HashMap<String, String> extend = new HashMap<>();
             extend.put("area", "中国香港");
-            System.out.println(voflix.categoryContent("1", "1", true, extend));
+            SpiderDebug.log(voflix.categoryContent("1", "1", true, extend));
+            Thread.sleep(5 * 1000L);
 
+            SpiderDebug.log(voflix.detailContent(Arrays.asList("/detail/162486.html")));
+            Thread.sleep(5 * 1000L);
 
-            ArrayList<String> ids = new ArrayList<>();
-//        ids.add("/detail/156852.html");
-            ids.add("/detail/162486.html");
-            System.out.println(voflix.detailContent(ids));
+            SpiderDebug.log(voflix.searchContent("我", true));
+            Thread.sleep(5 * 1000L);
 
-            System.out.println(voflix.searchContent("我", true));
-
-            System.out.println(voflix.playerContent("", "/play/139141-2-1.html", null));
+            SpiderDebug.log(voflix.playerContent("", "/play/139141-2-1.html", null));
+            Thread.sleep(5 * 1000L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
@@ -157,7 +158,6 @@ public class Live2Vod extends Spider {
             return originStr.substring(i + len, j);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("-------------->  截取产生异常了");
         }
         return "";
     }
@@ -446,22 +446,26 @@ public class Live2Vod extends Spider {
             live2Vod.init(new Context(), "https://raw.githubusercontent.com/zhixc/CatVodTVSpider/main/other/json/live.json"); // 远程 json 配置文件
 
             // 首页测试，输出...
-            System.out.println(live2Vod.homeContent(true));
+            SpiderDebug.log(live2Vod.homeContent(true));
+            Thread.sleep(5 * 1000L);
 
             // 分类页面数据测试
 //        String tid = "{\"pic\": \"https://cdn.jsdelivr.net/gh/zhixc/CatVodTVSpider@main/other/pic/live.png\", \"url\": \"https://agit.ai/fantaiying/fty/raw/branch/master/live.txt\", \"circuit\": 1}";
 //        String tid = "{\"pic\": \"https://cdn.jsdelivr.net/gh/zhixc/CatVodTVSpider@main/other/pic/live.png\", \"url\": \"https://agit.ai/xiaohu/tvbox/raw/branch/main/live.txt\", \"circuit\": 1}";
             String tid = "{\"circuit\":\"\",\"pic\":\"https://cdn.jsdelivr.net/gh/zhixc/CatVodTVSpider@main/other/pic/live.png\",\"url\":\"https://raw.githubusercontent.com/Ftindy/IPTV-URL/main/bestv.m3u\",\"group\":\"1\"}";
-            System.out.println(live2Vod.categoryContent(tid, "1", true, null));
+            SpiderDebug.log(live2Vod.categoryContent(tid, "1", true, null));
+            Thread.sleep(5 * 1000L);
 
             // m3u 格式的参数
             String s = "{\"vod_play_url\":\"CCTV1$https://cntv.sbs/live?auth=230601&id=cctv1\",\"pic\":\"https://live.fanmingming.com/tv/CCTV1.png\"}";
             JSONObject videoInfoObj = new JSONObject(s);
             List<String> ids = new ArrayList<>();
             ids.add(videoInfoObj.toString());
-            System.out.println(live2Vod.detailContent(ids));
+            SpiderDebug.log(live2Vod.detailContent(ids));
+            Thread.sleep(5 * 1000L);
 
-            System.out.println(live2Vod.playerContent("", "https://cntv.sbs/live?auth=230601&id=cctv1", new ArrayList<>()));
+            SpiderDebug.log(live2Vod.playerContent("", "https://cntv.sbs/live?auth=230601&id=cctv1", new ArrayList<>()));
+            Thread.sleep(5 * 1000L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

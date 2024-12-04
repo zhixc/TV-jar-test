@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
 //import com.github.catvod.utils.FileUtil;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 //import com.github.catvod.utils.okhttp.OkHttpUtil;
 
@@ -22,6 +23,7 @@ import org.jsoup.select.Elements;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -115,7 +117,7 @@ public class KuaikanZy extends Spider {
         if (cookie != null) return cookie;
         for (int i = 0; i < 5; i++) {
             try {
-                System.out.println("第" + (i + 1) + "次尝试OCR过验证码......");
+                SpiderDebug.log("第" + (i + 1) + "次尝试OCR过验证码......");
                 if (verifyByOCR()) break;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -154,7 +156,7 @@ public class KuaikanZy extends Spider {
         Response rsp2 = getOkHttpClient().newCall(builder2.build()).execute();
         String code = rsp2.body().string();
         rsp2.close();
-        System.out.println("ocr接口识别图片结果：" + code);
+        SpiderDebug.log("ocr接口识别图片结果：" + code);
 
         // 将验证码字符串对网站尝试进行验证
         String verifyUrl = "https://kkzy.tv/index.php/ajax/verify_check?type=search&verify=" + code;
@@ -303,11 +305,11 @@ public class KuaikanZy extends Spider {
         try {
             kuaikanZy.init(new Context(), "");
 
-            System.out.println(kuaikanZy.searchContent("斗破", true));
+            SpiderDebug.log(kuaikanZy.searchContent("斗破", true));
+            Thread.sleep(5 * 1000L);
 
-            List<String> ids = new ArrayList<>();
-            ids.add("66351");
-//            System.out.println(kuaikanZy.detailContent(ids));
+            SpiderDebug.log(kuaikanZy.detailContent(Arrays.asList("66351")));
+            Thread.sleep(5 * 1000L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

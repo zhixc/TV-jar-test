@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
@@ -15,6 +16,7 @@ import org.jsoup.select.Elements;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -195,21 +197,22 @@ public class XingYiYing extends Spider {
         try {
             xingYiYing.init(new Context(), "");
 
-            List<String> ids = new ArrayList<>();
-//        ids.add("205848");
-//        ids.add("183491");
-            ids.add("31606");
-            System.out.println(xingYiYing.detailContent(ids));
+            SpiderDebug.log(xingYiYing.detailContent(Arrays.asList("31606")));
+            Thread.sleep(5 * 1000L);
 
-            System.out.println(xingYiYing.searchContent("斗破", true));
+            SpiderDebug.log(xingYiYing.searchContent("斗破", true));
+            Thread.sleep(5 * 1000L);
 
-         /*String episodeUrl = "https://www.xingyiying.com/index.php/vod/play/id/31606/sid/1/nid/1.html";
-        List<String> vipFlags = new ArrayList<>();
-        System.out.println(xingYiYing.playerContent("YK【共12集】", episodeUrl, vipFlags));*/
+            //String episodeUrl = "https://www.xingyiying.com/index.php/vod/play/id/31606/sid/1/nid/1.html";
+            //List<String> vipFlags = new ArrayList<>();
+            //SpiderDebug.log(xingYiYing.playerContent("YK【共12集】", episodeUrl, vipFlags));
+            //Thread.sleep(5 * 1000L);
 
             String episodeUrl = "https://www.xingyiying.com/index.php/vod/play/id/31606/sid/2/nid/1.html";
             List<String> vipFlags = new ArrayList<>();
-            System.out.println(xingYiYing.playerContent("豪华【共12集】", episodeUrl, vipFlags));
+            SpiderDebug.log(xingYiYing.playerContent("豪华【共12集】", episodeUrl, vipFlags));
+            Thread.sleep(5 * 1000L);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

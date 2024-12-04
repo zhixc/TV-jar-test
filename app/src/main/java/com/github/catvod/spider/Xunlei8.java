@@ -3,6 +3,7 @@ package com.github.catvod.spider;
 import android.util.Base64;
 
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
@@ -122,8 +123,7 @@ public class Xunlei8 extends Spider {
                 Object[] result = new Object[3];
                 result[0] = 200;
                 result[1] = type;
-                System.out.println(pic);
-                System.out.println(type);
+                SpiderDebug.log("pic=" + pic + "\n" + "type" + type);
                 result[2] = response.body().byteStream();
                 return result;
             }

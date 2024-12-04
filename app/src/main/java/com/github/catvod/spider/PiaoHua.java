@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 
 import okhttp3.OkHttpClient;
@@ -222,19 +223,19 @@ public class PiaoHua extends Spider {
         PiaoHua piaoHua = new PiaoHua();
         try {
             piaoHua.init(new Context());
-            System.out.println(piaoHua.homeContent(true));
+            SpiderDebug.log(piaoHua.homeContent(true));
             HashMap<String, String> extend = new HashMap<>();
-//        System.out.println(piaoHua.categoryContent("/dongzuo/", "3", true, extend));
-            System.out.println(piaoHua.categoryContent("https://www.xpiaohua.com/column/dongzuo/20230622/63676.html", "1", true, extend));
+            //SpiderDebug.log(piaoHua.categoryContent("/dongzuo/", "3", true, extend));
+            //SpiderDebug.log(piaoHua.categoryContent("https://www.xpiaohua.com/column/dongzuo/20230622/63676.html", "1", true, extend));
 
             ArrayList<String> ids = new ArrayList<>();
-//        ids.add("https://www.xpiaohua.com/column/lianxuju/20210221/51623.html");
-//        ids.add("https://www.xpiaohua.com/column/dongzuo/20230626/63766.html");
-//        ids.add("https://www.xpiaohua.com/column/dongzuo/20230622/63721.html");
-            ids.add("https://www.xpiaohua.com/column/dongzuo/20230622/63719.html");
-            System.out.println(piaoHua.detailContent(ids));
+            //ids.add("https://www.xpiaohua.com/column/lianxuju/20210221/51623.html");
+            //ids.add("https://www.xpiaohua.com/column/dongzuo/20230626/63766.html");
+            //ids.add("https://www.xpiaohua.com/column/dongzuo/20230622/63721.html");
+            //ids.add("https://www.xpiaohua.com/column/dongzuo/20230622/63719.html");
+            //SpiderDebug.log(piaoHua.detailContent(ids));
 
-            System.out.println(piaoHua.searchContent("长月", true));
+            //SpiderDebug.log(piaoHua.searchContent("长月", true));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

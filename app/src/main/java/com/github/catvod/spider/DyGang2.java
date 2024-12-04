@@ -7,6 +7,7 @@ import com.github.catvod.bean.Class;
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Json;
 import com.github.catvod.utils.Util;
@@ -264,21 +265,63 @@ public class DyGang2 extends Spider {
         return Result.get().url(id).string();
     }
 
+    /**
+     * 仅用于测试，编译打包jar时需要去掉这个函数
+     * just for test, remove this function when you make jar
+     */
     public static void main(String[] args) {
-        DyGang2 dyGang = new DyGang2();
+        DyGang dyGang = new DyGang();
         try {
-            dyGang.init(new Context(), "https://raw.githubusercontent.com/zhixc/CatVodSpider/refs/heads/dev/json/DyGang.json");
-//            System.out.println(dyGang.homeContent(true));
-//            System.out.println();
-            System.out.println(dyGang.categoryContent("my_dianying", "1", true, new HashMap<>()));
-//            System.out.println(dyGang.categoryContent("my_dianying", "1040", true, new HashMap<>()));
-//            System.out.println(dyGang.detailContent(Arrays.asList("/ys/20241202/56044.htm")));
+            dyGang.init(new Context(), "");
+            SpiderDebug.log(dyGang.homeContent(true));
+            Thread.sleep(5 * 1000L);
 
-//            System.out.println(dyGang.searchContent("我", true));
-//            Thread.sleep(5 * 1000);
-//            System.out.println(dyGang.searchContent("我", true, "2"));
-        }catch (Exception e){
-            e.printStackTrace();
+            SpiderDebug.log(dyGang.homeVideoContent());
+            Thread.sleep(5 * 1000L);
+
+
+            HashMap<String, String> extend = new HashMap<>();
+            SpiderDebug.log(dyGang.categoryContent("ys", "1", true, extend));
+            Thread.sleep(5 * 1000L);
+
+
+            //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/ys/20240402/54327.htm")));
+            Thread.sleep(5 * 1000L);
+
+            //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/dmq/20211031/48089.htm")));
+            Thread.sleep(5 * 1000L);
+
+            //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/ys/20240402/54324.htm")));
+            Thread.sleep(5 * 1000L);
+
+            //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/ys/20240403/54333.htm")));
+            Thread.sleep(5 * 1000L);
+
+            //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/ys/20240126/53858.htm")));
+            Thread.sleep(5 * 1000L);
+
+            //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/dmq/20220805/49858.htm")));
+            Thread.sleep(5 * 1000L);
+
+            //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/dmq/20240304/54101.htm")));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(dyGang.searchContent("周处除三害", true));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(dyGang.searchContent("我", true));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(dyGang.searchContent("我", true, "2"));
+            Thread.sleep(5 * 1000L);
+
+            String id = "magnet:?xt=urn:btih:7df6fc1a473d519a47ee415a285ea3cc39653a0d&dn=%e8%b6%8a%e8%bf%87%e5%b1%b1%e4%b8%98";
+            String flag = "磁力";
+            List<String> vipFlags = new ArrayList<>();
+            SpiderDebug.log(dyGang.playerContent(flag, id, vipFlags));
+            Thread.sleep(5 * 1000L);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
@@ -215,21 +216,26 @@ public class Dm84 extends Spider {
         Dm84 dm84 = new Dm84();
         try {
             dm84.init(new Context(), "");
-            System.out.println(dm84.homeContent(true));
-            System.out.println(dm84.homeVideoContent());
+            SpiderDebug.log(dm84.homeContent(true));
+            Thread.sleep(5 * 1000L);
 
-            /*HashMap<String, String> extend = new HashMap<>();
+            SpiderDebug.log(dm84.homeVideoContent());
+            Thread.sleep(5 * 1000L);
+
+            HashMap<String, String> extend = new HashMap<>();
             extend.put("year", "2023");
-            System.out.println(dm84.categoryContent("1", "1", true, extend));*/
+            SpiderDebug.log(dm84.categoryContent("1", "1", true, extend));
+            Thread.sleep(5 * 1000L);
 
-            /*List<String> ids = new ArrayList<>();
-            ids.add("/v/4045.html");
-            System.out.println(dm84.detailContent(ids));*/
+            SpiderDebug.log(dm84.detailContent(Arrays.asList("/v/4045.html")));
+            Thread.sleep(5 * 1000L);
 
-            //System.out.println(dm84.searchContent("修仙", true));
+            SpiderDebug.log(dm84.searchContent("修仙", true));
+            Thread.sleep(5 * 1000L);
 
-            /*List<String> vipFlags = new ArrayList<>();
-            System.out.println(dm84.playerContent("线路1", "https://dm84.tv/p/4045-1-1.html", vipFlags));*/
+            List<String> vipFlags = new ArrayList<>();
+            SpiderDebug.log(dm84.playerContent("线路1", "https://dm84.tv/p/4045-1-1.html", vipFlags));
+            Thread.sleep(5 * 1000L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

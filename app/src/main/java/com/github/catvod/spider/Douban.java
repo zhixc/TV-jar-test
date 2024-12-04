@@ -3,6 +3,7 @@ package com.github.catvod.spider;
 import android.content.Context;
 
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 
 import org.json.JSONArray;
@@ -182,16 +183,24 @@ public class Douban extends Spider {
         try {
             douban.init(new Context(), "https://raw.githubusercontent.com/zhixc/CatVodTVSpider/main/other/json/douban.json");
 
-            //System.out.println(douban.homeContent(true));
+            SpiderDebug.log(douban.homeContent(true));
+            Thread.sleep(5 * 1000L);
 
             HashMap<String, String> extend = new HashMap<>();
-//        extend.put("类型", "喜剧");
-//        extend.put("年代", "2022");
-//        extend.put("sort", "R");
-//        System.out.println(douban.categoryContent("movie", "1", true, extend));
-//        System.out.println(douban.categoryContent("movie", "2", true, extend));
-//        System.out.println(douban.categoryContent("tv", "1", true, extend));
-            System.out.println(douban.categoryContent("hot_gaia", "1", true, extend));
+            extend.put("类型", "喜剧");
+            extend.put("年代", "2022");
+            extend.put("sort", "R");
+            SpiderDebug.log(douban.categoryContent("movie", "1", true, extend));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(douban.categoryContent("movie", "2", true, extend));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(douban.categoryContent("tv", "1", true, extend));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(douban.categoryContent("hot_gaia", "1", true, extend));
+            Thread.sleep(5 * 1000L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

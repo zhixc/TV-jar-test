@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import com.github.catvod.crawler.Spider;
 //import com.github.catvod.utils.FileUtil;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 //import com.github.catvod.utils.okhttp.OkHttpUtil;
 
@@ -21,6 +22,7 @@ import org.jsoup.select.Elements;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -93,7 +95,7 @@ public class SuoniZy extends Spider {
     private String getCookie() {
         if (cookie != null) return cookie;
         for (int i = 0; i < 5; i++) {
-            System.out.println("第" + (i + 1) + "次尝试OCR过验证码......");
+            SpiderDebug.log("第" + (i + 1) + "次尝试OCR过验证码......");
             try {
                 if (verifyByOCR()) break;
             } catch (Exception e) {
@@ -133,7 +135,7 @@ public class SuoniZy extends Spider {
         Response rsp2 = getOkHttpClient().newCall(builder2.build()).execute();
         String code = rsp2.body().string();
         rsp2.close();
-        System.out.println("ocr接口识别图片结果：" + code);
+        SpiderDebug.log("ocr接口识别图片结果：" + code);
 
         // 将验证码字符串对网站尝试进行验证
         String verifyUrl = "https://suonizy.com/index.php/ajax/verify_check?type=search&verify=" + code;
@@ -280,12 +282,14 @@ public class SuoniZy extends Spider {
         try {
             suoniZy.init(new Context(), "");
 
-            System.out.println(suoniZy.searchContent("神印", true));
+            SpiderDebug.log(suoniZy.searchContent("神印", true));
+            Thread.sleep(5 * 1000L);
 
-            List<String> ids = new ArrayList<>();
-//        ids.add("64676"); // 紫川·光明三杰
-            ids.add("34382"); // 完美世界
-            System.out.println(suoniZy.detailContent(ids));
+            SpiderDebug.log(suoniZy.detailContent(Arrays.asList("34382")));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(suoniZy.detailContent(Arrays.asList("64676")));
+            Thread.sleep(5 * 1000L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

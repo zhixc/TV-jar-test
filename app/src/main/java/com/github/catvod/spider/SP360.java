@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 
 import okhttp3.OkHttpClient;
@@ -406,18 +407,24 @@ public class SP360 extends Spider {
         try {
             sp360.init(new Context(), "douyin,xigua");
 
-//            System.out.println(sp360.homeContent(true));
+            SpiderDebug.log(sp360.homeContent(true));
+            Thread.sleep(5 * 1000L);
 
-            System.out.println(sp360.homeVideoContent());
+            SpiderDebug.log(sp360.homeVideoContent());
+            Thread.sleep(5 * 1000L);
 
             HashMap<String, String> extend = new HashMap<>();
             extend.put("year", "2023");
 //            extend.put("year", "2022");
 //            extend.put("actor", "成龙");
-//            System.out.println(sp360.categoryContent("1", "1", true, extend));
-//            System.out.println(sp360.categoryContent("2", "1", true, extend));
-//            System.out.println(sp360.categoryContent("3", "1", true, extend));
+            SpiderDebug.log(sp360.categoryContent("1", "1", true, extend));
+            Thread.sleep(5 * 1000L);
 
+            SpiderDebug.log(sp360.categoryContent("2", "1", true, extend));
+            Thread.sleep(5 * 1000L);
+
+            SpiderDebug.log(sp360.categoryContent("3", "1", true, extend));
+            Thread.sleep(5 * 1000L);
 
             List<String> ids = new ArrayList<>();
             // 电影
@@ -433,11 +440,14 @@ public class SP360 extends Spider {
             // 动漫
 //        ids.add("{\"detailReferer\":\"https://www.360kan.com/ct/OUPkaZ7kNY7vDj.html\",\"detailUrl\":\"https://api.web.360kan.com/v1/detail?cat=4&id=OUPkaZ7kNY7vDj&callback=\"}");
             ids.add("{\"detailReferer\":\"https://www.360kan.com/ct/QE8qcp7jMoOxDj.html\",\"detailUrl\":\"https://api.web.360kan.com/v1/detail?cat=4&id=QE8qcp7jMoOxDj&callback=\"}");
-//            System.out.println(sp360.detailContent(ids));
+            SpiderDebug.log(sp360.detailContent(ids));
+            Thread.sleep(5 * 1000L);
 
+            SpiderDebug.log(sp360.searchContent("三体", true));
+            Thread.sleep(5 * 1000L);
 
-//            System.out.println(sp360.searchContent("三体", true));
-//            System.out.println(sp360.searchContent("满江红", true));
+            SpiderDebug.log(sp360.searchContent("满江红", true));
+            Thread.sleep(5 * 1000L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
