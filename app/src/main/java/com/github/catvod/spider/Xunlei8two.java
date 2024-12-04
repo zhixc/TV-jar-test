@@ -52,7 +52,7 @@ public class Xunlei8two extends Spider {
         for (Element it : items) {
             String vodId = it.select("a:eq(0)").attr("href");
             String name = it.select("a:eq(0)").attr("title");
-            String pic = it.select("a:eq(0) img:eq(0)").attr("src");
+            String pic = fixCover(it.select("a:eq(0) img:eq(0)").attr("src"));
             videos.add(new Vod(vodId, name, pic));
         }
         return videos;
@@ -66,7 +66,8 @@ public class Xunlei8two extends Spider {
         }
     }
 
-    public static Object[] loadPic(String pic) {
+    public static Object[] loadPic(Map<String, String> params) {
+        String pic = params.get("pic");
         try {
             pic = new String(Base64.decode(pic, Base64.DEFAULT | Base64.URL_SAFE | Base64.NO_WRAP), "UTF-8");
             if (xunlei8PicHeader == null) {
