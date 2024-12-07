@@ -42,7 +42,7 @@ public class JsonParallel {
                         builder.addHeader(key, reqHeaders.get(key));
                     }
                     builder.tag(ParseOKTag);
-                    String json = OkHttp.client().newCall(builder.build()).execute().body().string();;
+                    String json = OkHttp.client().newCall(builder.build()).execute().body().string();
                     JSONObject taskResult = Misc.jsonParse(url, json);
                     taskResult.put("jxFrom", jxName);
                     SpiderDebug.log(taskResult.toString());
