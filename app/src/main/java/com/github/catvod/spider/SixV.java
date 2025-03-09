@@ -264,7 +264,7 @@ public class SixV extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick, String pg) throws Exception {
-        String searchUrl = siteUrl + "/e/search/index.php";
+        String searchUrl = siteUrl + "/e/search/1index.php";
         String html = "";
         if ("1".equals(pg)) {
             String formData = "show=title&tempid=1&tbname=article&mid=1&dopost=search&submit=&keyboard=" + URLEncoder.encode(key, "UTF-8");
@@ -315,16 +315,16 @@ public class SixV extends Spider {
 
             // 首页测试，输出...
             //SpiderDebug.log(sixV.homeContent(true));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
             //SpiderDebug.log(sixV.homeVideoContent());
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
             // 分类页面数据测试
             HashMap<String, String> extend = new HashMap<>();
             //SpiderDebug.log(sixV.categoryContent("xijupian", "1", true, extend));
-            SpiderDebug.log(sixV.categoryContent("xijupian", "3", true, extend));
-            Thread.sleep(5 * 1000L);
+            //SpiderDebug.log(sixV.categoryContent("xijupian", "3", true, extend));
+            //Thread.sleep(5 * 1000L);
 
             // 详情页面数据测试
             List<String> ids = new ArrayList<>();
@@ -336,15 +336,15 @@ public class SixV extends Spider {
             //ids.add("/xijupian/21667.html");
             ids.add("/donghuapian/18878.html");
             //SpiderDebug.log(sixV.detailContent(ids));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
-            //SpiderDebug.log(sixV.searchContent("周处除三害", true));
+            SpiderDebug.log(sixV.searchContent("周处除三害", true));
             Thread.sleep(5 * 1000L);
 
             //SpiderDebug.log(sixV.searchContent("我", true));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
             //SpiderDebug.log(sixV.searchContent("我", true, "2"));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
             String flag = "磁力1";
             String id = "magnet:?xt=urn:btih:8c935a998671e1f0938ae51597d8819b9f6871cf";

@@ -42,10 +42,10 @@ public class DyGang extends Spider {
 
     //  地址发布：https://www.dygang.me/
     //  可用的域名：
-    //   http://www.dygangs.net
-    //   http://www.dygangs.me
+    //   https://www.dygangs.net
+    //   https://www.dygangs.me
     //   https://www.dygang.tv
-    private final String siteUrl = "http://www.dygangs.me";
+    private final String siteUrl = "https://www.dygangs.me";
     private String nextSearchUrlPrefix;
     private String nextSearchUrlSuffix;
 
@@ -268,7 +268,7 @@ public class DyGang extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick, String pg) throws Exception {
-        String searchUrl = "http://www.dygangs.me/e/search/index.php";
+        String searchUrl = siteUrl+"/e/search/index.php";
         String html = "";
         if ("1".equals(pg)) {
             String requestBody = "tempid=1&tbname=article&keyboard=" + URLEncoder.encode(key, "GBK") + "&show=title%2Csmalltext&Submit=%CB%D1%CB%F7";
@@ -281,8 +281,8 @@ public class DyGang extends Spider {
                     .header("Cache-Control", "max-age=0")
                     .header("Connection", "keep-alive")
                     .header("Content-Type", "application/x-www-form-urlencoded")
-                    .header("Origin", "http://www.dygangs.me")
-                    .header("Referer", "http://www.dygangs.me/")
+                    .header("Origin", siteUrl)
+                    .header("Referer", siteUrl+"/")
                     .header("Upgrade-Insecure-Requests", "1")
                     .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36")
                     .build();
@@ -324,44 +324,44 @@ public class DyGang extends Spider {
             SpiderDebug.log(dyGang.homeContent(true));
             Thread.sleep(5 * 1000L);
 
-            SpiderDebug.log(dyGang.homeVideoContent());
-            Thread.sleep(5 * 1000L);
+            //SpiderDebug.log(dyGang.homeVideoContent());
+            //Thread.sleep(5 * 1000L);
 
 
             HashMap<String, String> extend = new HashMap<>();
-            SpiderDebug.log(dyGang.categoryContent("ys", "1", true, extend));
-            Thread.sleep(5 * 1000L);
+            //SpiderDebug.log(dyGang.categoryContent("ys", "1", true, extend));
+            //Thread.sleep(5 * 1000L);
 
 
             //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/ys/20240402/54327.htm")));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
             //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/dmq/20211031/48089.htm")));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
             //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/ys/20240402/54324.htm")));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
             //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/ys/20240403/54333.htm")));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
             //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/ys/20240126/53858.htm")));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
             //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/dmq/20220805/49858.htm")));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
             //SpiderDebug.log(dyGang.detailContent(Arrays.asList("/dmq/20240304/54101.htm")));
-            Thread.sleep(5 * 1000L);
+            //Thread.sleep(5 * 1000L);
 
             SpiderDebug.log(dyGang.searchContent("周处除三害", true));
             Thread.sleep(5 * 1000L);
 
-            SpiderDebug.log(dyGang.searchContent("我", true));
-            Thread.sleep(5 * 1000L);
+            //SpiderDebug.log(dyGang.searchContent("我", true));
+            //Thread.sleep(5 * 1000L);
 
-            SpiderDebug.log(dyGang.searchContent("我", true, "2"));
-            Thread.sleep(5 * 1000L);
+            //SpiderDebug.log(dyGang.searchContent("我", true, "2"));
+            //Thread.sleep(5 * 1000L);
 
             String id = "magnet:?xt=urn:btih:7df6fc1a473d519a47ee415a285ea3cc39653a0d&dn=%e8%b6%8a%e8%bf%87%e5%b1%b1%e4%b8%98";
             String flag = "磁力";
