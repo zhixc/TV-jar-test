@@ -21,6 +21,8 @@ public class Proxy extends Spider {
                 return MixDemo.loadHtml(params.get("flag"), params.get("url"));
             case "xunlei8":
                 return Xunlei8.loadPic(params.get("pic"));
+            case "DoubanWeb":
+                return DoubanWeb.loadPic(params.get("pic"));
             default:
                 return null;
         }
