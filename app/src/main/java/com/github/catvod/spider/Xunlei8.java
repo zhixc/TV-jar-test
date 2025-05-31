@@ -34,7 +34,7 @@ import okhttp3.Response;
  * 迅雷电影天堂、迅雷吧
  */
 public class Xunlei8 extends Spider {
-    private final String siteUrl = "https://xunlei8.top";
+    private final String siteUrl = "https://xunlei8.org";
 
     private final String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36";
 
